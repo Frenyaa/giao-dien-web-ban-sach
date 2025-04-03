@@ -1,0 +1,279 @@
+.thanhtoan-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+.thanhtoan-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.thanhtoan-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.thongtin-donhang,
+.thongtin-giaohang,
+.phuongthuc-thanhtoan {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.thongtin-donhang {
+    grid-column: 1 / -1;
+}
+
+.thongtin-donhang h2,
+.thongtin-giaohang h2,
+.phuongthuc-thanhtoan h2 {
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.danhsach-sanpham {
+    margin-bottom: 20px;
+}
+
+.sanpham-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.sanpham-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.sanpham-info {
+    flex: 1;
+}
+
+.sanpham-info h3 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.sanpham-info .gia {
+    color: #e10c00;
+    font-weight: bold;
+}
+
+.tongtien {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+    border-top: 2px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+    border-color: #1ab188;
+    background: #f9f9f9;
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 10px;
+}
+
+.payment-method label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.payment-method i {
+    font-size: 20px;
+    color: #1ab188;
+}
+
+.xacnhan-thanhtoan {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.btn-thanhtoan {
+    background: #1ab188;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-thanhtoan:hover {
+    background: #179b77;
+}
+
+.payment-details {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.payment-method input[type="radio"]:checked + label + .payment-details {
+    display: block;
+}
+
+.bank-info {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.bank-info p {
+    margin: 5px 0;
+}
+
+.bank-info strong {
+    color: #333;
+}
+
+.qr-code {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.qr-code img {
+    max-width: 200px;
+    height: auto;
+}
+
+.qr-code p {
+    color: #666;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.credit-card-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.credit-card-form input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-pay {
+    background: #1ab188;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.btn-pay:hover {
+    background: #179b77;
+}
+
+@media (max-width: 768px) {
+    .thanhtoan-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.momo-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #eee;
+}
+
+.momo-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.momo-info strong {
+    color: #333;
+}
+
+.momo-instruction {
+    margin-top: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.momo-instruction:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #af005f;
+} 

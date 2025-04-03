@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo mã QR MoMo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #af005f;
+            text-align: center;
+        }
+        #qrcode {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .download-btn {
+            display: block;
+            margin-top: 20px;
+            background: #af005f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .download-btn:hover {
+            background: #8f004f;
+        }
+        .info {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mã QR Thanh Toán MoMo</h1>
+        <div id="qrcode"></div>
+        <button class="download-btn" onclick="downloadQR()">Tải mã QR</button>
+        <div class="info">
+            <p>Số điện thoại MoMo: 0123456789</p>
+            <p>Nội dung: Thanh toan don hang</p>
+        </div>
+    </div>
+
+    <script>
+        // Tạo mã QR cố định cho trang web
+        const momoUrl = 'https://nhantien.momo.vn/0123456789/0/Thanh toan don hang';
+
+        // Tạo mã QR
+        new QRCode(document.getElementById('qrcode'), {
+            text: momoUrl,
+            width: 256,
+            height: 256,
+            colorDark: '#af005f',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        function downloadQR() {
+            const qrImage = document.querySelector('#qrcode img');
+            if (!qrImage) return;
+
+            const link = document.createElement('a');
+            link.download = 'momo-qr.png';
+            link.href = qrImage.src;
+            link.click();
+        }
+    </script>
+</body>
+</html> 

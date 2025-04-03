@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="img/favicon.ico" />
+
+    <title>Thanh toán - Thế giới điện thoại</title>
+
+    <!-- Load font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous">
+
+    <!-- our files -->
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/topnav.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/taikhoan.css">
+    <link rel="stylesheet" href="css/thanhtoan.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- js -->
+    <script src="data/products.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="js/dungchung.js"></script>
+    <script src="js/thanhtoan.js"></script>
+
+</head>
+
+<body>
+    <script> addTopNav(); </script>
+
+    <section style="min-height: 85vh">
+        <script> addHeader(); </script>
+
+        <div class="thanhtoan-container">
+            <h1>Thanh toán đơn hàng</h1>
+            
+            <div class="thanhtoan-content">
+                <div class="thongtin-donhang">
+                    <h2>Thông tin đơn hàng</h2>
+                    <div class="danhsach-sanpham">
+                        <!-- Danh sách sản phẩm sẽ được thêm vào đây -->
+                    </div>
+                    <div class="tongtien">
+                        <span>Tổng tiền:</span>
+                        <span class="gia">0 ₫</span>
+                    </div>
+                </div>
+
+                <div class="thongtin-giaohang">
+                    <h2>Thông tin giao hàng</h2>
+                    <form id="form-thanhtoan">
+                        <div class="form-group">
+                            <label>Họ và tên</label>
+                            <input type="text" name="hoten" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="tel" name="sodienthoai" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            <textarea name="diachi" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú</label>
+                            <textarea name="ghichu"></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="phuongthuc-thanhtoan">
+                    <h2>Phương thức thanh toán</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <input type="radio" name="payment" id="cod" value="cod" checked>
+                            <label for="cod">
+                                <i class="fa fa-money"></i>
+                                Thanh toán khi nhận hàng (COD)
+                            </label>
+                        </div>
+
+                        <div class="payment-method">
+                            <input type="radio" name="payment" id="bank" value="bank">
+                            <label for="bank">
+                                <i class="fa fa-university"></i>
+                                Chuyển khoản ngân hàng
+                            </label>
+                            <div class="payment-details" id="bank-details">
+                                <div class="bank-info">
+                                    <p><strong>Ngân hàng:</strong> Vietcombank</p>
+                                    <p><strong>Số tài khoản:</strong> 123456789</p>
+                                    <p><strong>Chủ tài khoản:</strong> CÔNG TY TNHH THẾ GIỚI ĐIỆN THOẠI</p>
+                                    <p><strong>Nội dung chuyển khoản:</strong> <span id="bank-content"></span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method">
+                            <input type="radio" name="payment" id="momo" value="momo">
+                            <label for="momo">
+                                <i class="fa fa-mobile"></i>
+                                Ví MoMo
+                            </label>
+                            <div class="payment-details" id="momo-details">
+                                <div class="qr-code">
+                                    <img src="img/momo-qr.png" alt="MoMo QR Code">
+                                </div>
+                                <div class="momo-info">
+                                    <p><strong>Số điện thoại MoMo:</strong> 0123456789</p>
+                                    <p><strong>Nội dung chuyển khoản:</strong> Thanh toan don hang</p>
+                                    <p class="momo-instruction">1. Mở ứng dụng MoMo</p>
+                                    <p class="momo-instruction">2. Chọn "Quét mã"</p>
+                                    <p class="momo-instruction">3. Quét mã QR trên màn hình</p>
+                                    <p class="momo-instruction">4. Kiểm tra thông tin và xác nhận thanh toán</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method">
+                            <input type="radio" name="payment" id="credit" value="credit">
+                            <label for="credit">
+                                <i class="fa fa-credit-card"></i>
+                                Thẻ tín dụng/ghi nợ
+                            </label>
+                            <div class="payment-details" id="credit-details">
+                                <div class="credit-card-form">
+                                    <div class="form-group">
+                                        <label>Số thẻ</label>
+                                        <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Ngày phát hành</label>
+                                            <input type="text" placeholder="MM/YY" maxlength="5">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>CVV</label>
+                                            <input type="text" placeholder="123" maxlength="4">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tên chủ thẻ</label>
+                                        <input type="text" placeholder="NGUYEN VAN A">
+                                    </div>
+                                    <button type="button" class="btn-pay">Thanh toán</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="xacnhan-thanhtoan">
+                    <button onclick="xacNhanThanhToan()" class="btn-thanhtoan">
+                        Xác nhận đặt hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        addContainTaiKhoan();
+    </script>
+
+    <div class="footer"><script>addFooter();</script></div>
+
+    <i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
+</body>
+
+</html> 
