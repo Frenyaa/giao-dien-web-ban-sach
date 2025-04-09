@@ -40,7 +40,7 @@ function addProductToTable(user) {
 		`;
 		table.innerHTML = s;
 		return;
-	} else if (user.products.length == 0) {
+	} else if (!user.products || user.products.length == 0) {
 		s += `
 			<tr>
 				<td colspan="7"> 
@@ -102,63 +102,94 @@ function addProductToTable(user) {
 
 function xoaSanPhamTrongGioHang(i) {
 	if (window.confirm('Xác nhận hủy mua')) {
-		currentuser.products.splice(i, 1);
-		capNhatMoiThu();
+		const user = getCurrentUser();
+		if (!user) return;
+
+		user.products.splice(i, 1);
+		setCurrentUser(user);
+		updateListUser(user);
+		addProductToTable(user);
+		capNhat_ThongTin_CurrentUser();
 	}
 }
 
 function thanhToan() {
-	var c_user = getCurrentUser();
-	if(c_user.off) {
-        alert('Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!');
-        addAlertBox('Tài khoản của bạn đã bị khóa bởi Admin.', '#aa0000', '#fff', 10000);
-        return;
-	}
-	
-	if (!currentuser.products.length) {
-		addAlertBox('Không có mặt hàng nào cần thanh toán !!', '#ffb400', '#fff', 2000);
+	const user = getCurrentUser();
+	if (!user) {
+		alert('Vui lòng đăng nhập để thanh toán!');
+		window.location.href = 'login.html';
 		return;
 	}
 
-	// Chuyển hướng đến trang thanh toán
+	if (user.off) {
+		alert('Tài khoản của bạn hiện đang bị khóa nên không thể mua hàng!');
+		return;
+	}
+
+	if (!user.products || !user.products.length) {
+		alert('Giỏ hàng trống!');
+		return;
+	}
+
 	window.location.href = 'thanhtoan.html';
 }
 
 function xoaHet() {
-	if (currentuser.products.length) {
-		if (window.confirm('Bạn có chắc chắn muốn xóa hết sản phẩm trong giỏ !!')) {
-			currentuser.products = [];
-			capNhatMoiThu();
+	const user = getCurrentUser();
+	if (!user) return;
+
+	if (user.products && user.products.length) {
+		if (window.confirm('Bạn có chắc chắn muốn xóa hết sản phẩm trong giỏ?')) {
+			user.products = [];
+			setCurrentUser(user);
+			updateListUser(user);
+			addProductToTable(user);
+			capNhat_ThongTin_CurrentUser();
 		}
 	}
 }
 
 // Cập nhật số lượng lúc nhập số lượng vào input
 function capNhatSoLuongFromInput(inp, masp) {
+	const user = getCurrentUser();
+	if (!user) return;
+
 	var soLuongMoi = Number(inp.value);
 	if (!soLuongMoi || soLuongMoi <= 0) soLuongMoi = 1;
 
-	for (var p of currentuser.products) {
+	for (var p of user.products) {
 		if (p.ma == masp) {
 			p.soluong = soLuongMoi;
 		}
 	}
 
-	capNhatMoiThu();
+	setCurrentUser(user);
+	updateListUser(user);
+	addProductToTable(user);
+	capNhat_ThongTin_CurrentUser();
 }
 
 function tangSoLuong(masp) {
-	for (var p of currentuser.products) {
+	const user = getCurrentUser();
+	if (!user) return;
+
+	for (var p of user.products) {
 		if (p.ma == masp) {
 			p.soluong++;
 		}
 	}
 
-	capNhatMoiThu();
+	setCurrentUser(user);
+	updateListUser(user);
+	addProductToTable(user);
+	capNhat_ThongTin_CurrentUser();
 }
 
 function giamSoLuong(masp) {
-	for (var p of currentuser.products) {
+	const user = getCurrentUser();
+	if (!user) return;
+
+	for (var p of user.products) {
 		if (p.ma == masp) {
 			if (p.soluong > 1) {
 				p.soluong--;
@@ -168,7 +199,10 @@ function giamSoLuong(masp) {
 		}
 	}
 
-	capNhatMoiThu();
+	setCurrentUser(user);
+	updateListUser(user);
+	addProductToTable(user);
+	capNhat_ThongTin_CurrentUser();
 }
 
 function capNhatMoiThu() { // Mọi thứ
