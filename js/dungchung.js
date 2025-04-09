@@ -554,8 +554,8 @@ function addHeader() {
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
     <div class="header group">
         <div class="logo">
-            <a href="index.html" class="logo">
-                <div class="logo-text">Book<span>Store</span></div>
+            <a href="index.html">
+                <img src="img/trangchu.png" alt="Trang chủ BookStore" title="Trang chủ BookStore" style="width: 250px;">
             </a>
         </div>
 

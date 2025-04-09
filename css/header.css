@@ -12,12 +12,9 @@
 	/* Logo */
 		.header .logo {
 			width: 250px;
-			height: 60px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-decoration: none;
-			transition: all 0.3s ease;
+			height: 100px;
+			float: left;
+			transition-duration: .1s;
 		}
 		.header .logo:hover {
 			transform: scale(1.05);
@@ -37,7 +34,7 @@
 		.header .logo img {
 			width: 100%;
 			height: 100%;
-			vertical-align: middle;
+			object-fit: contain;
 		}
 	/* ======= End logo ======== */
 
