@@ -115,6 +115,24 @@
 	<div class="footer"><script>addFooter();</script></div>
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
+
+	<div class="login-form">
+		<h2>Đăng nhập</h2>
+		<form id="loginForm">
+			<div class="form-group">
+				<label for="username">Tài khoản:</label>
+				<input type="text" id="username" required>
+			</div>
+			<div class="form-group">
+				<label for="password">Mật khẩu:</label>
+				<input type="password" id="password" required>
+			</div>
+			<div class="form-group">
+				<button type="button" onclick="login()">Đăng nhập</button>
+				<button type="button" onclick="loginAsStaff()">Đăng nhập nhân viên</button>
+			</div>
+		</form>
+	</div>
 </body>
 
 </html>

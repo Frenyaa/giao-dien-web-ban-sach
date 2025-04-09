@@ -3,6 +3,12 @@ var adminInfo = [{
     "pass": "adadad"
 }];
 
+// Danh sách tài khoản nhân viên (trong thực tế nên lưu trong database)
+const staffAccounts = [
+    { username: 'staff1', password: '123456', name: 'Nhân viên 1' },
+    { username: 'staff2', password: '123456', name: 'Nhân viên 2' }
+];
+
 function getListAdmin() {
     return JSON.parse(window.localStorage.getItem('ListAdmin'));
 }
@@ -857,6 +863,41 @@ function getThongTinSanPhamFrom_TheGioiDiDong() {
 			})();`;
         document.body.appendChild(s);
     })();
+}
+
+// Hàm đăng nhập cho nhân viên
+function loginAsStaff() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const staff = staffAccounts.find(account => 
+        account.username === username && account.password === password
+    );
+
+    if (staff) {
+        // Lưu thông tin đăng nhập vào localStorage
+        localStorage.setItem('staffLoggedIn', 'true');
+        localStorage.setItem('staffName', staff.name);
+        
+        // Chuyển hướng đến trang nhân viên
+        window.location.href = 'staff.html';
+    } else {
+        alert('Tài khoản hoặc mật khẩu không đúng!');
+    }
+}
+
+// Hàm kiểm tra đăng nhập khi vào trang nhân viên
+function checkStaffLogin() {
+    if (!localStorage.getItem('staffLoggedIn')) {
+        window.location.href = 'index.html';
+    }
+}
+
+// Hàm đăng xuất nhân viên
+function logOutStaff() {
+    localStorage.removeItem('staffLoggedIn');
+    localStorage.removeItem('staffName');
+    window.location.href = 'index.html';
 }
 
 // $('.taikhoan').find('input').on('keyup blur focus', function (e) {
