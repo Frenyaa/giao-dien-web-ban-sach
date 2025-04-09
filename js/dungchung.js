@@ -207,43 +207,42 @@ function closeLoginForm() {
     document.getElementById('customer-login-form').style.display = 'none';
 }
 
-// Đăng nhập cho nhân viên
-function loginAsStaff() {
-    const username = document.getElementById('staffUsername').value;
-    const password = document.getElementById('staffPassword').value;
+// Hàm đăng nhập xử lý cả khách hàng và nhân viên
+function login(form) {
+    const username = form.username.value;
+    const password = form.password.value;
+    const accountType = form.accountType.value;
 
-    const staff = staffAccounts.find(account => 
-        account.username === username && account.password === password
-    );
+    if (accountType === 'staff') {
+        // Đăng nhập cho nhân viên
+        const staff = staffAccounts.find(account => 
+            account.username === username && account.password === password
+        );
 
-    if (staff) {
-        localStorage.setItem('staffLoggedIn', 'true');
-        localStorage.setItem('staffName', staff.name);
-        window.location.href = 'staff.html';
-    } else {
-        alert('Tài khoản hoặc mật khẩu không đúng!');
-    }
-}
-
-// Đăng nhập cho khách hàng
-function loginAsCustomer() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    const user = listUser.find(u => u.username === username && u.pass === password);
-    
-    if (user) {
-        if(user.off) {
-            alert('Tài khoản này đang bị khoá. Không thể đăng nhập.');
-            return;
+        if (staff) {
+            localStorage.setItem('staffLoggedIn', 'true');
+            localStorage.setItem('staffName', staff.name);
+            window.location.href = 'staff.html';
+            return false;
         }
-        localStorage.setItem('userLoggedIn', 'true');
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        window.location.href = 'index.html';
-        location.reload();
     } else {
-        alert('Tài khoản hoặc mật khẩu không đúng!');
+        // Đăng nhập cho khách hàng
+        const users = getListUser();
+        const user = users.find(u => u.username === username && u.pass === password);
+        
+        if (user) {
+            if(user.off) {
+                alert('Tài khoản này đang bị khoá. Không thể đăng nhập.');
+                return false;
+            }
+            setCurrentUser(user);
+            location.reload();
+            return false;
+        }
     }
+
+    alert('Tài khoản hoặc mật khẩu không đúng!');
+    return false;
 }
 
 // Đăng xuất
