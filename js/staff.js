@@ -238,6 +238,102 @@ function formatMoney(amount) {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 }
 
+// Kiểm tra đăng nhập
+window.onload = function() {
+    if (!localStorage.getItem('staffLoggedIn')) {
+        window.location.href = 'index.html';
+        return;
+    }
+    loadCustomers();
+};
+
+// Load danh sách khách hàng
+function loadCustomers() {
+    const customers = getListUser();
+    displayCustomers(customers);
+}
+
+// Hiển thị danh sách khách hàng
+function displayCustomers(customers) {
+    const tbody = document.getElementById('customerList');
+    tbody.innerHTML = '';
+
+    customers.forEach((customer, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${customer.ho} ${customer.ten}</td>
+            <td>${customer.email}</td>
+            <td>${customer.username}</td>
+            <td>
+                <span class="customer-status ${customer.off ? 'status-blocked' : 'status-active'}">
+                    ${customer.off ? 'Đã khóa' : 'Đang hoạt động'}
+                </span>
+            </td>
+            <td class="action-buttons">
+                ${customer.off 
+                    ? `<button class="btn-unblock" onclick="toggleBlockCustomer('${customer.username}', false)">
+                         <i class="fa fa-unlock"></i> Mở khóa
+                       </button>`
+                    : `<button class="btn-block" onclick="toggleBlockCustomer('${customer.username}', true)">
+                         <i class="fa fa-lock"></i> Khóa
+                       </button>`
+                }
+                <button class="btn-view" onclick="viewCustomerDetails('${customer.username}')">
+                    <i class="fa fa-eye"></i> Chi tiết
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Tìm kiếm khách hàng
+function searchCustomers() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const customers = getListUser();
+    
+    const filteredCustomers = customers.filter(customer => 
+        customer.username.toLowerCase().includes(searchTerm) ||
+        customer.ho.toLowerCase().includes(searchTerm) ||
+        customer.ten.toLowerCase().includes(searchTerm) ||
+        customer.email.toLowerCase().includes(searchTerm)
+    );
+    
+    displayCustomers(filteredCustomers);
+}
+
+// Khóa/Mở khóa tài khoản khách hàng
+function toggleBlockCustomer(username, shouldBlock) {
+    const customers = getListUser();
+    const customer = customers.find(c => c.username === username);
+    
+    if (customer) {
+        customer.off = shouldBlock;
+        setListUser(customers);
+        loadCustomers();
+        
+        alert(`Đã ${shouldBlock ? 'khóa' : 'mở khóa'} tài khoản ${username}`);
+    }
+}
+
+// Xem chi tiết khách hàng
+function viewCustomerDetails(username) {
+    const customers = getListUser();
+    const customer = customers.find(c => c.username === username);
+    
+    if (customer) {
+        const details = `
+            Thông tin khách hàng:
+            - Họ và tên: ${customer.ho} ${customer.ten}
+            - Email: ${customer.email}
+            - Tài khoản: ${customer.username}
+            - Trạng thái: ${customer.off ? 'Đã khóa' : 'Đang hoạt động'}
+        `;
+        alert(details);
+    }
+}
+
 // Khởi tạo khi trang được tải
 document.addEventListener('DOMContentLoaded', function() {
     // Kiểm tra đăng nhập
