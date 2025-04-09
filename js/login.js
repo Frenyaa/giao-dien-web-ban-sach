@@ -58,10 +58,20 @@ function dangNhap() {
     }
 
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.username === username && u.password === password);
+    console.log('Users in storage:', users); // Debug: kiểm tra danh sách users
 
+    const user = users.find(u => u.username === username);
     if (!user) {
-        alert('Tên đăng nhập hoặc mật khẩu không đúng!');
+        alert('Tài khoản không tồn tại!');
+        return false;
+    }
+
+    console.log('Found user:', user); // Debug: kiểm tra user tìm thấy
+    console.log('Input password:', password); // Debug: kiểm tra password nhập vào
+    console.log('Stored password:', user.password); // Debug: kiểm tra password trong storage
+
+    if (user.password !== password) {
+        alert('Mật khẩu không đúng!');
         return false;
     }
 
@@ -82,4 +92,23 @@ function dangNhap() {
 function dangXuat() {
     localStorage.removeItem('currentUser');
     location.reload();
+}
+
+// Kiểm tra trạng thái đăng nhập
+function checkLoginStatus() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const user = users.find(u => u.username === currentUser);
+        if (user) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Debug: Hiển thị thông tin trong localStorage
+function showDebugInfo() {
+    console.log('Current User:', localStorage.getItem('currentUser'));
+    console.log('All Users:', localStorage.getItem('users'));
 } 
