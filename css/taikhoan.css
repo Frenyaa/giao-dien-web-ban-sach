@@ -64,6 +64,8 @@
   list-style: none;
   padding: 0;
   margin: 0 0 40px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .tab-group:after {
@@ -77,11 +79,11 @@
   /* nút Đăng nhập - Đăng kí */
   display: block;
   padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  font-size: 20px;
+  background: rgba(160, 179, 176, 0.25);
+  color: #a0b3b0;
+  font-size: 18px;
   float: left;
-  width: 50%;
+  width: 100%;
   text-align: center;
   cursor: pointer;
   transition: .5s ease;
@@ -99,12 +101,11 @@
 }
 
 .tab-content>div {
-  display: block;
+  display: none;
 }
 
-.tab-content>div:last-child {
-  display: none;
-  /* ẩn signup (last-child của tab-content) lúc mới vào web */
+.tab-content>div:first-child {
+  display: block;
 }
 
 .taikhoan h1 {
