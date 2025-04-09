@@ -135,3 +135,101 @@
 .xoaHet:hover {
     background-color: rgb(224, 65, 65);
 }
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+h1 {
+    text-align: center;
+    color: #2a5885;
+    margin-bottom: 30px;
+}
+
+#gioHangContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#gioHangContent table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#gioHangContent th,
+#gioHangContent td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#gioHangContent th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2a5885;
+}
+
+#gioHangContent td button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+#gioHangContent td button:hover {
+    opacity: 0.8;
+}
+
+#gioHangContent td button:first-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+#gioHangContent td button:last-child {
+    background-color: #28a745;
+    color: white;
+}
+
+#gioHangContent tfoot td {
+    font-weight: bold;
+    color: #2a5885;
+}
+
+.btn-dathang {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 12px;
+    background-color: #2a5885;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-dathang:hover {
+    background-color: #1d3f5f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #gioHangContent table {
+        font-size: 14px;
+    }
+
+    #gioHangContent td button {
+        padding: 4px 8px;
+    }
+
+    .btn-dathang {
+        width: 100%;
+    }
+}

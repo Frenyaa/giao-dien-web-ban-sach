@@ -184,3 +184,171 @@ function capNhatMoiThu() { // Mọi thứ
 	// Cập nhật trên header
 	capNhat_ThongTin_CurrentUser();
 }
+
+// Lấy giỏ hàng từ localStorage
+function getGioHang() {
+    return JSON.parse(localStorage.getItem('giohang')) || [];
+}
+
+// Lưu giỏ hàng vào localStorage
+function luuGioHang(gioHang) {
+    localStorage.setItem('giohang', JSON.stringify(gioHang));
+}
+
+// Thêm sản phẩm vào giỏ hàng
+function themVaoGioHang(sanPham) {
+    const gioHang = getGioHang();
+    const index = gioHang.findIndex(item => item.id === sanPham.id);
+    
+    if (index !== -1) {
+        gioHang[index].quantity += 1;
+    } else {
+        gioHang.push({
+            id: sanPham.id,
+            name: sanPham.ten,
+            price: sanPham.gia,
+            quantity: 1
+        });
+    }
+    
+    luuGioHang(gioHang);
+    capNhatHienThiGioHang();
+}
+
+// Cập nhật số lượng sản phẩm
+function capNhatSoLuong(id, quantity) {
+    const gioHang = getGioHang();
+    const index = gioHang.findIndex(item => item.id === id);
+    
+    if (index !== -1) {
+        if (quantity <= 0) {
+            gioHang.splice(index, 1);
+        } else {
+            gioHang[index].quantity = quantity;
+        }
+        luuGioHang(gioHang);
+        capNhatHienThiGioHang();
+    }
+}
+
+// Xóa sản phẩm khỏi giỏ hàng
+function xoaSanPham(id) {
+    const gioHang = getGioHang();
+    const index = gioHang.findIndex(item => item.id === id);
+    
+    if (index !== -1) {
+        gioHang.splice(index, 1);
+        luuGioHang(gioHang);
+        capNhatHienThiGioHang();
+    }
+}
+
+// Tính tổng tiền giỏ hàng
+function tinhTongTien() {
+    const gioHang = getGioHang();
+    return gioHang.reduce((total, item) => total + item.price * item.quantity, 0);
+}
+
+// Hiển thị giỏ hàng
+function capNhatHienThiGioHang() {
+    const gioHang = getGioHang();
+    const gioHangElement = document.getElementById('gioHangContent');
+    
+    if (!gioHangElement) return;
+    
+    if (gioHang.length === 0) {
+        gioHangElement.innerHTML = '<p>Giỏ hàng trống</p>';
+        return;
+    }
+    
+    let html = '<table><thead><tr><th>Sản phẩm</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th><th></th></tr></thead><tbody>';
+    
+    gioHang.forEach(item => {
+        html += `
+            <tr>
+                <td>${item.name}</td>
+                <td>
+                    <button onclick="capNhatSoLuong('${item.id}', ${item.quantity - 1})">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="capNhatSoLuong('${item.id}', ${item.quantity + 1})">+</button>
+                </td>
+                <td>${formatCurrency(item.price)}</td>
+                <td>${formatCurrency(item.price * item.quantity)}</td>
+                <td><button onclick="xoaSanPham('${item.id}')">Xóa</button></td>
+            </tr>
+        `;
+    });
+    
+    html += `</tbody><tfoot><tr><td colspan="3">Tổng cộng:</td><td colspan="2">${formatCurrency(tinhTongTien())}</td></tr></tfoot></table>`;
+    html += '<button onclick="datHang()" class="btn-dathang">Đặt hàng</button>';
+    
+    gioHangElement.innerHTML = html;
+}
+
+// Đặt hàng
+function datHang() {
+    const gioHang = getGioHang();
+    if (gioHang.length === 0) {
+        alert('Giỏ hàng trống!');
+        return;
+    }
+
+    // Kiểm tra đăng nhập
+    const userInfo = getCurrentUser();
+    if (!userInfo) {
+        alert('Vui lòng đăng nhập để đặt hàng!');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    // Lấy thông tin giao hàng
+    const diaChi = prompt('Nhập địa chỉ giao hàng:');
+    const soDienThoai = prompt('Nhập số điện thoại:');
+
+    if (!diaChi || !soDienThoai) {
+        alert('Vui lòng nhập đầy đủ thông tin giao hàng!');
+        return;
+    }
+
+    // Tạo đơn hàng
+    const donHang = {
+        username: userInfo.username,
+        fullName: userInfo.ho + ' ' + userInfo.ten,
+        address: diaChi,
+        phone: soDienThoai
+    };
+
+    // Gọi hàm tạo đơn hàng từ orders.js
+    const order = createOrder(donHang, gioHang);
+
+    if (order) {
+        alert('Đặt hàng thành công! Mã đơn hàng của bạn là: ' + order.id);
+        // Xóa giỏ hàng sau khi đặt hàng thành công
+        localStorage.removeItem('giohang');
+        capNhatHienThiGioHang();
+    } else {
+        alert('Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại!');
+    }
+}
+
+// Format tiền tệ
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    }).format(amount);
+}
+
+// Lấy thông tin người dùng hiện tại
+function getCurrentUser() {
+    const username = localStorage.getItem('currentUser');
+    if (!username) return null;
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    return users.find(user => user.username === username);
+}
+
+// Khởi tạo khi trang được tải
+document.addEventListener('DOMContentLoaded', function() {
+    capNhatHienThiGioHang();
+});
