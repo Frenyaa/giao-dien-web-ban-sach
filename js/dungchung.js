@@ -554,7 +554,7 @@ function addHeader() {
     <div class="header group">
         <div class="logo">
             <a href="index.html">
-                <img src="img/logo.jpg" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
+                <img src="img/trangchu.png" alt="Trang chủ Thế Giới Sách" title="Trang chủ Thế Giới Sách">
             </a>
         </div> <!-- End Logo -->
 
@@ -629,41 +629,40 @@ function addContainTaiKhoan() {
             <ul class="tab-group">
                 <li class="tab active"><a href="#login">Đăng nhập</a></li>
                 <li class="tab"><a href="#signup">Đăng kí</a></li>
+                <li class="tab"><a href="#staff">Nhân viên</a></li>
             </ul> <!-- /tab group -->
 
             <div class="tab-content">
                 <div id="login">
                     <h1>Chào mừng bạn trở lại!</h1>
 
-                    <form onsubmit="return logIn(this);">
-
+                    <form onsubmit="return login(this);">
                         <div class="field-wrap">
                             <label>
-                                Tên đăng nhập<span class="req">*</span>
+                                Tài khoản<span class="req">*</span>
                             </label>
                             <input name='username' type="text" required autocomplete="off" />
-                        </div> <!-- /user name -->
+                        </div>
 
                         <div class="field-wrap">
                             <label>
                                 Mật khẩu<span class="req">*</span>
                             </label>
-                            <input name="pass" type="password" required autocomplete="off" />
-                        </div> <!-- pass -->
+                            <input name="password" type="password" required autocomplete="off" />
+                        </div>
+
+                        <input type="hidden" name="accountType" value="customer">
 
                         <p class="forgot"><a href="#">Quên mật khẩu?</a></p>
 
-                        <button type="submit" class="button button-block" />Tiếp tục</button>
-
-                    </form> <!-- /form -->
-
-                </div> <!-- /log in -->
+                        <button type="submit" class="button button-block">Đăng nhập</button>
+                    </form>
+                </div>
 
                 <div id="signup">
-                    <h1>Đăng kí miễn phí</h1>
+                    <h1>Đăng kí tài khoản</h1>
 
-                    <form onsubmit="return signUp(this);">
-
+                    <form onsubmit="return register(this);">
                         <div class="top-row">
                             <div class="field-wrap">
                                 <label>
@@ -678,36 +677,57 @@ function addContainTaiKhoan() {
                                 </label>
                                 <input name="ten" type="text" required autocomplete="off" />
                             </div>
-                        </div> <!-- / ho ten -->
+                        </div>
 
                         <div class="field-wrap">
                             <label>
-                                Địa chỉ Email<span class="req">*</span>
+                                Email<span class="req">*</span>
                             </label>
                             <input name="email" type="email" required autocomplete="off" />
-                        </div> <!-- /email -->
+                        </div>
 
                         <div class="field-wrap">
                             <label>
-                                Tên đăng nhập<span class="req">*</span>
+                                Tài khoản<span class="req">*</span>
                             </label>
-                            <input name="newUser" type="text" required autocomplete="off" />
-                        </div> <!-- /user name -->
+                            <input name="newUsername" type="text" required autocomplete="off" />
+                        </div>
 
                         <div class="field-wrap">
                             <label>
                                 Mật khẩu<span class="req">*</span>
                             </label>
-                            <input name="newPass" type="password" required autocomplete="off" />
-                        </div> <!-- /pass -->
+                            <input name="newPassword" type="password" required autocomplete="off" />
+                        </div>
 
-                        <button type="submit" class="button button-block" />Tạo tài khoản</button>
+                        <button type="submit" class="button button-block">Tạo tài khoản</button>
+                    </form>
+                </div>
 
-                    </form> <!-- /form -->
+                <div id="staff">
+                    <h1>Đăng nhập nhân viên</h1>
 
-                </div> <!-- /sign up -->
+                    <form onsubmit="return login(this);">
+                        <div class="field-wrap">
+                            <label>
+                                Tài khoản<span class="req">*</span>
+                            </label>
+                            <input name='username' type="text" required autocomplete="off" />
+                        </div>
+
+                        <div class="field-wrap">
+                            <label>
+                                Mật khẩu<span class="req">*</span>
+                            </label>
+                            <input name="password" type="password" required autocomplete="off" />
+                        </div>
+
+                        <input type="hidden" name="accountType" value="staff">
+
+                        <button type="submit" class="button button-block">Đăng nhập</button>
+                    </form>
+                </div>
             </div><!-- tab-content -->
-
         </div> <!-- /taikhoan -->
     </div>`);
 }
