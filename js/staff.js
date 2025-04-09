@@ -491,4 +491,107 @@ function hoanThanhDonHang(orderId) {
             hienThiDanhSachDonHang();
         }
     }
+}
+
+// Khởi tạo tài khoản admin mặc định nếu chưa có
+if (!localStorage.getItem('staffs')) {
+    const defaultAdmin = {
+        username: 'admin',
+        password: 'admin123',
+        ho: 'Admin',
+        ten: 'BookStore',
+        email: 'admin@bookstore.com',
+        role: 'admin',
+        off: false
+    };
+    localStorage.setItem('staffs', JSON.stringify([defaultAdmin]));
+}
+
+// Đăng ký tài khoản nhân viên
+function dangKyNhanVien() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const ho = document.getElementById('ho').value;
+    const ten = document.getElementById('ten').value;
+    const email = document.getElementById('email').value;
+    const role = document.getElementById('role').value;
+
+    if (!username || !password || !ho || !ten || !email || !role) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return false;
+    }
+
+    const staffs = JSON.parse(localStorage.getItem('staffs')) || [];
+    
+    // Kiểm tra username đã tồn tại chưa
+    if (staffs.some(staff => staff.username === username)) {
+        alert('Tên đăng nhập đã tồn tại!');
+        return false;
+    }
+
+    // Tạo nhân viên mới
+    const newStaff = {
+        username: username,
+        password: password,
+        ho: ho,
+        ten: ten,
+        email: email,
+        role: role,
+        off: false
+    };
+
+    // Thêm nhân viên mới vào danh sách
+    staffs.push(newStaff);
+    localStorage.setItem('staffs', JSON.stringify(staffs));
+
+    alert('Đăng ký nhân viên thành công!');
+    window.location.href = 'staff.html';
+    return false;
+}
+
+// Đăng nhập nhân viên
+function dangNhapNhanVien() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (!username || !password) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return false;
+    }
+
+    const staffs = JSON.parse(localStorage.getItem('staffs')) || [];
+    console.log('Staffs in storage:', staffs);
+
+    const staff = staffs.find(s => s.username === username);
+    if (!staff) {
+        alert('Tài khoản không tồn tại!');
+        return false;
+    }
+
+    if (staff.password !== password) {
+        alert('Mật khẩu không đúng!');
+        return false;
+    }
+
+    if (staff.off) {
+        alert('Tài khoản của bạn đã bị khóa!');
+        return false;
+    }
+
+    // Lưu thông tin đăng nhập
+    localStorage.setItem('currentStaff', JSON.stringify(staff));
+    
+    // Chuyển đến trang tương ứng với role
+    if (staff.role === 'admin') {
+        window.location.href = 'admin.html';
+    } else {
+        window.location.href = 'staff.html';
+    }
+    return false;
+}
+
+// Đăng xuất nhân viên
+function dangXuatNhanVien() {
+    localStorage.removeItem('currentStaff');
+    window.location.href = 'staff_login.html';
 } 

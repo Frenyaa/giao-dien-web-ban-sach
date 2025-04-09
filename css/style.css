@@ -616,3 +616,12 @@ nav {
 .btn i {
     margin-right: 5px;
 }
+
+.btn-staff {
+    background-color: #4CAF50;
+    color: white !important;
+}
+
+.btn-staff:hover {
+    background-color: #45a049;
+}
