@@ -560,7 +560,7 @@ function addHeader() {
         </div>
 
         <div class="content">
-            <div class="search-header" style="position: relative; left: 162px; top: 1px;">
+            <div class="search-header">
                 <form class="input-search" method="get" action="index.html">
                     <div class="autocomplete">
                         <input id="search-box" name="search" autocomplete="off" type="text" placeholder="Nhập từ khóa tìm kiếm...">
@@ -569,11 +569,8 @@ function addHeader() {
                             Tìm kiếm
                         </button>
                     </div>
-                </form> <!-- End Form search -->
-                <div class="tags">
-                    <strong>Từ khóa: </strong>
-                </div>
-            </div> <!-- End Search header -->
+                </form>
+            </div>
 
             <div class="tools-member">
                 <div class="member">
