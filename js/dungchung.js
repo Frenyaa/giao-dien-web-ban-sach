@@ -187,89 +187,89 @@ function updateListUser(u, newData) {
     setListUser(list);
 }
 
-function logIn(form) {
-    // Lấy dữ liệu từ form
-    var name = form.username.value;
-    var pass = form.pass.value;
-    var newUser = new User(name, pass);
+// Hàm đăng nhập chung
+function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const userType = document.getElementById('userType').value;
 
-    // Lấy dữ liệu từ danh sách người dùng localstorage
-    var listUser = getListUser();
+    if (userType === 'staff') {
+        // Kiểm tra đăng nhập nhân viên
+        const staff = staffAccounts.find(account => 
+            account.username === username && account.password === password
+        );
 
-    // Kiểm tra xem dữ liệu form có khớp với người dùng nào trong danh sách ko
-    for (var u of listUser) {
-        if (equalUser(newUser, u)) {
-            if(u.off) {
-                alert('Tài khoản này đang bị khoá. Không thể đăng nhập.');
-                return false;
-            }
-
-            setCurrentUser(u);
-
-            // Reload lại trang -> sau khi reload sẽ cập nhật luôn giỏ hàng khi hàm setupEventTaiKhoan chạy
-            location.reload();
-            return false;
+        if (staff) {
+            localStorage.setItem('staffLoggedIn', 'true');
+            localStorage.setItem('staffName', staff.name);
+            window.location.href = 'staff.html';
+            return;
+        }
+    } else {
+        // Kiểm tra đăng nhập khách hàng
+        const user = listUser.find(u => u.username === username && u.pass === password);
+        if (user) {
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            window.location.href = 'index.html';
+            return;
         }
     }
 
-    // Đăng nhập vào admin
-    for (var ad of adminInfo) {
-        if (equalUser(newUser, ad)) {
-            alert('Xin chào admin .. ');
-            window.localStorage.setItem('admin', true);
-            window.location.assign('admin.html');
-            return false;
-        }
-    }
-
-    // Trả về thông báo nếu không khớp
-    alert('Nhập sai tên hoặc mật khẩu !!!');
-    form.username.focus();
-    return false;
+    // Nếu đăng nhập thất bại
+    alert('Tài khoản hoặc mật khẩu không đúng!');
 }
 
-function signUp(form) {
-    var ho = form.ho.value;
-    var ten = form.ten.value;
-    var email = form.email.value;
-    var username = form.newUser.value;
-    var pass = form.newPass.value;
-    var newUser = new User(username, pass, ho, ten, email);
-
-    // Lấy dữ liệu các khách hàng hiện có
-    var listUser = getListUser();
-
-    // Kiểm tra trùng admin
-    for (var ad of adminInfo) {
-        if (newUser.username == ad.username) {
-            alert('Tên đăng nhập đã có người sử dụng !!');
-            return false;
-        }
+// Hàm kiểm tra đăng nhập nhân viên
+function checkStaffLogin() {
+    if (!localStorage.getItem('staffLoggedIn')) {
+        window.location.href = 'index.html';
     }
-
-    // Kiểm tra xem dữ liệu form có trùng với khách hàng đã có không
-    for (var u of listUser) {
-        if (newUser.username == u.username) {
-            alert('Tên đăng nhập đã có người sử dụng !!');
-            return false;
-        }
-    }
-
-    // Lưu người mới vào localstorage
-    listUser.push(newUser);
-    window.localStorage.setItem('ListUser', JSON.stringify(listUser));
-
-    // Đăng nhập vào tài khoản mới tạo
-    window.localStorage.setItem('CurrentUser', JSON.stringify(newUser));
-    alert('Đăng kí thành công, Bạn sẽ được tự động đăng nhập!');
-    location.reload();
-
-    return false;
 }
 
-function logOut() {
-    window.localStorage.removeItem('CurrentUser');
-    location.reload();
+// Hàm đăng xuất nhân viên
+function logOutStaff() {
+    localStorage.removeItem('staffLoggedIn');
+    localStorage.removeItem('staffName');
+    window.location.href = 'index.html';
+}
+
+// Hàm hiển thị form đăng nhập
+function showLoginForm() {
+    const loginForm = document.createElement('div');
+    loginForm.className = 'login-form';
+    loginForm.innerHTML = `
+        <div class="login-content">
+            <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
+            <h2>Đăng nhập</h2>
+            <form onsubmit="event.preventDefault(); login();">
+                <div class="form-group">
+                    <label for="userType">Loại tài khoản:</label>
+                    <select id="userType">
+                        <option value="customer">Khách hàng</option>
+                        <option value="staff">Nhân viên</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="username">Tài khoản:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Đăng nhập</button>
+                </div>
+                <div class="form-group text-center">
+                    <a href="#" onclick="showForgotPassword()">Quên mật khẩu?</a>
+                    <span class="divider">|</span>
+                    <a href="#" onclick="showRegisterForm()">Đăng ký</a>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(loginForm);
 }
 
 // Hiển thị form tài khoản, giá trị truyền vào là true hoặc false

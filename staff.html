@@ -32,9 +32,9 @@
     <aside class="sidebar">
         <ul class="nav">
             <li class="nav-title">MENU</li>
-            <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Trang Chủ</a></li>
-            <li class="nav-item"><a class="nav-link"><i class="fa fa-book"></i> Quản lý sách</a></li>
-            <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
+            <li class="nav-item"><a class="nav-link active" data-tab="home"><i class="fa fa-home"></i> Trang Chủ</a></li>
+            <li class="nav-item"><a class="nav-link" data-tab="quanlysach"><i class="fa fa-book"></i> Quản lý sách</a></li>
+            <li class="nav-item"><a class="nav-link" data-tab="donhang"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
             <li class="nav-item">
                 <hr>
             </li>
@@ -49,7 +49,7 @@
 
     <!-- Khung hiển thị chính -->
     <div class="main">
-        <div class="home">
+        <div class="home" style="display: block;">
             <div class="canvasContainer">
                 <canvas id="myChart1"></canvas>
             </div>
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Quản lý sách -->
-        <div class="quanlysach">
+        <div class="quanlysach" style="display: none;">
             <table class="table-header">
                 <tr>
                     <th title="Sắp xếp" style="width: 5%" onclick="sortBooksTable('stt')">Stt <i class="fa fa-sort"></i></th>
@@ -147,7 +147,7 @@
         </div>
 
         <!-- Đơn Hàng -->
-        <div class="donhang">
+        <div class="donhang" style="display: none;">
             <table class="table-header">
                 <tr>
                     <th title="Sắp xếp" style="width: 5%" onclick="sortDonHangTable('stt')">Stt <i class="fa fa-sort"></i></th>

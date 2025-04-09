@@ -5,6 +5,25 @@ let danhSachDonHang = [];
 // Hàm đăng xuất
 function logOutStaff() {
     localStorage.removeItem('staffLoggedIn');
+    localStorage.removeItem('staffName');
+    window.location.href = 'index.html';
+}
+
+// Hàm chuyển đổi giữa các tab
+function showTab(tabName) {
+    // Ẩn tất cả các tab
+    document.querySelectorAll('.main > div').forEach(tab => {
+        tab.style.display = 'none';
+    });
+
+    // Hiển thị tab được chọn
+    document.querySelector(`.${tabName}`).style.display = 'block';
+
+    // Cập nhật trạng thái active của menu
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    document.querySelector(`.nav-link[data-tab="${tabName}"]`).classList.add('active');
 }
 
 // Hàm tự động tạo mã sách
@@ -42,6 +61,12 @@ function themSach() {
     danhSachSach.push(sachMoi);
     hienThiDanhSachSach();
     document.getElementById('khungThemSach').style.transform = 'scale(0)';
+    
+    // Reset form
+    document.getElementById('khungThemSach').querySelectorAll('input, textarea').forEach(input => {
+        input.value = '';
+    });
+    document.getElementById('anhDaiDienSachThem').src = '';
 }
 
 // Hàm hiển thị danh sách sách
@@ -218,7 +243,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Kiểm tra đăng nhập
     if (!localStorage.getItem('staffLoggedIn')) {
         window.location.href = 'index.html';
+        return;
     }
+
+    // Thêm sự kiện click cho menu
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabName = this.getAttribute('data-tab');
+            if (tabName) {
+                showTab(tabName);
+            }
+        });
+    });
 
     // Load dữ liệu từ localStorage nếu có
     const savedBooks = localStorage.getItem('danhSachSach');
@@ -231,4 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('beforeunload', function() {
         localStorage.setItem('danhSachSach', JSON.stringify(danhSachSach));
     });
+
+    // Hiển thị tab mặc định
+    showTab('home');
 }); 
