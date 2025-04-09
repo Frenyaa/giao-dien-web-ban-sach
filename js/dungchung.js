@@ -526,11 +526,11 @@ function addTopNav() {
 
 // Thêm header
 function addHeader() {
-    document.write(`        
-	<div class="header group">
+    document.write(`
+    <div class="header group">
         <div class="logo">
             <a href="index.html">
-                <img src="img/trangchu.png" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
+                <img src="img/logo.jpg" alt="Trang chủ Smartphone Store" title="Trang chủ Smartphone Store">
             </a>
         </div> <!-- End Logo -->
 
@@ -546,21 +546,26 @@ function addHeader() {
                     </div>
                 </form> <!-- End Form search -->
                 <div class="tags">
-                  
+                    <strong>Từ khóa: </strong>
                 </div>
             </div> <!-- End Search header -->
 
             <div class="tools-member">
                 <div class="member">
-                    <a onclick="checkTaiKhoan()">
+                    <a onclick="showTaiKhoan(true)" id="btnDangNhap">
                         <i class="fa fa-user"></i>
-                        Tài khoản
+                        Đăng nhập
                     </a>
-                    <div class="menuMember hide">
-                        <a href="nguoidung.html">Trang người dùng</a>
-                        <a onclick="if(window.confirm('Xác nhận đăng xuất ?')) logOut();">Đăng xuất</a>
+                    <div class="menuMember hide" id="menuMember">
+                        <a href="#" onclick="showAccountInfo()">
+                            <i class="fa fa-user-circle-o"></i>
+                            Tài khoản của tôi
+                        </a>
+                        <a href="#" onclick="logOut()">
+                            <i class="fa fa-sign-out"></i>
+                            Đăng xuất
+                        </a>
                     </div>
-
                 </div> <!-- End Member -->
 
                 <div class="cart">
@@ -570,16 +575,10 @@ function addHeader() {
                         <span class="cart-number"></span>
                     </a>
                 </div> <!-- End Cart -->
-
-                <!--<div class="check-order">
-                    <a>
-                        <i class="fa fa-truck"></i>
-                        <span>Đơn hàng</span>
-                    </a>
-                </div> -->
             </div><!-- End Tools Member -->
         </div> <!-- End Content -->
-    </div> <!-- End Header -->`)
+    </div> <!-- End Header -->
+    `);
 }
 
 function addFooter() {
@@ -876,45 +875,35 @@ function logOutStaff() {
     window.location.href = 'index.html';
 }
 
-// $('.taikhoan').find('input').on('keyup blur focus', function (e) {
+// Hiển thị form tài khoản
+function showTaiKhoan(show) {
+    var value = (show ? "scale(1)" : "scale(0)");
+    var div = document.getElementsByClassName('containTaikhoan')[0];
+    div.style.transform = value;
+}
 
-//     var $this = $(this),
-//         label = $this.prev('label');
+// Chuyển tab đăng nhập/đăng ký
+$(document).ready(function() {
+    $('.tab a').on('click', function (e) {
+        e.preventDefault();
+        
+        $(this).parent().addClass('active');
+        $(this).parent().siblings().removeClass('active');
+        
+        target = $(this).attr('href');
 
-//     if (e.type === 'keyup') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.addClass('active highlight');
-//         }
-//     } else if (e.type === 'blur') {
-//         if ($this.val() === '') {
-//             label.removeClass('active highlight');
-//         } else {
-//             label.removeClass('highlight');
-//         }
-//     } else if (e.type === 'focus') {
+        $('.tab-content > div').not(target).hide();
+        
+        $(target).fadeIn(600);
+    });
+});
 
-//         if ($this.val() === '') {
-//             label.removeClass('highlight');
-//         } else if ($this.val() !== '') {
-//             label.addClass('highlight');
-//         }
-//     }
-
-// });
-
-// $('.tab a').on('click', function (e) {
-
-//     e.preventDefault();
-
-//     $(this).parent().addClass('active');
-//     $(this).parent().siblings().removeClass('active');
-
-//     target = $(this).attr('href');
-
-//     $('.tab-content > div').not(target).hide();
-
-//     $(target).fadeIn(600);
-
-// });
+// Hiển thị form đăng nhập khi click vào nút đăng nhập
+function setupEventTaiKhoan() {
+    var btnDangNhap = document.getElementById('btnDangNhap');
+    if (btnDangNhap) {
+        btnDangNhap.onclick = function() {
+            showTaiKhoan(true);
+        }
+    }
+}
