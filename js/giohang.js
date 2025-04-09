@@ -324,18 +324,23 @@ function getCurrentUser() {
     return users.find(user => user.username === username);
 }
 
-// Cập nhật thông tin người dùng
-function updateCurrentUser(user) {
-    if (!user) return;
-    
+// Cập nhật thông tin người dùng trong danh sách users
+function updateListUser(updatedUser) {
+    if (!updatedUser) return;
+
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    const index = users.findIndex(u => u.username === user.username);
+    const index = users.findIndex(u => u.username === updatedUser.username);
     
     if (index !== -1) {
-        users[index] = user;
+        users[index] = updatedUser;
         localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('currentUser', JSON.stringify(user));
     }
+}
+
+// Cập nhật thông tin người dùng hiện tại
+function setCurrentUser(user) {
+    if (!user) return;
+    localStorage.setItem('currentUser', user.username);
 }
 
 // Đặt hàng
