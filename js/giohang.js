@@ -205,118 +205,109 @@ function giamSoLuong(masp) {
 	capNhat_ThongTin_CurrentUser();
 }
 
-function capNhatMoiThu() { // Mọi thứ
-	animateCartNumber();
+function capNhatMoiThu() {
+    const user = getCurrentUser();
+    if (!user) return;
 
-	// cập nhật danh sách sản phẩm trong localstorage
-	setCurrentUser(currentuser);
-	updateListUser(currentuser);
-
-	// cập nhật danh sách sản phẩm ở table
-	addProductToTable(currentuser);
-
-	// Cập nhật trên header
-	capNhat_ThongTin_CurrentUser();
+    setCurrentUser(user);
+    updateListUser(user);
+    addProductToTable(user);
+    capNhat_ThongTin_CurrentUser();
 }
 
-// Lấy giỏ hàng từ localStorage
 function getGioHang() {
-    return JSON.parse(localStorage.getItem('giohang')) || [];
+    const user = getCurrentUser();
+    return user ? user.products || [] : [];
 }
 
-// Lưu giỏ hàng vào localStorage
 function luuGioHang(gioHang) {
-    localStorage.setItem('giohang', JSON.stringify(gioHang));
+    const user = getCurrentUser();
+    if (!user) return;
+
+    user.products = gioHang;
+    capNhatMoiThu();
 }
 
-// Thêm sản phẩm vào giỏ hàng
 function themVaoGioHang(sanPham) {
-    const gioHang = getGioHang();
-    const index = gioHang.findIndex(item => item.id === sanPham.id);
-    
-    if (index !== -1) {
-        gioHang[index].quantity += 1;
-    } else {
-        gioHang.push({
-            id: sanPham.id,
-            name: sanPham.ten,
-            price: sanPham.gia,
-            quantity: 1
-        });
-    }
-    
-    luuGioHang(gioHang);
-    capNhatHienThiGioHang();
-}
-
-// Cập nhật số lượng sản phẩm
-function capNhatSoLuong(id, quantity) {
-    const gioHang = getGioHang();
-    const index = gioHang.findIndex(item => item.id === id);
-    
-    if (index !== -1) {
-        if (quantity <= 0) {
-            gioHang.splice(index, 1);
-        } else {
-            gioHang[index].quantity = quantity;
-        }
-        luuGioHang(gioHang);
-        capNhatHienThiGioHang();
-    }
-}
-
-// Xóa sản phẩm khỏi giỏ hàng
-function xoaSanPham(id) {
-    const gioHang = getGioHang();
-    const index = gioHang.findIndex(item => item.id === id);
-    
-    if (index !== -1) {
-        gioHang.splice(index, 1);
-        luuGioHang(gioHang);
-        capNhatHienThiGioHang();
-    }
-}
-
-// Tính tổng tiền giỏ hàng
-function tinhTongTien() {
-    const gioHang = getGioHang();
-    return gioHang.reduce((total, item) => total + item.price * item.quantity, 0);
-}
-
-// Hiển thị giỏ hàng
-function capNhatHienThiGioHang() {
-    const gioHang = getGioHang();
-    const gioHangElement = document.getElementById('gioHangContent');
-    
-    if (!gioHangElement) return;
-    
-    if (gioHang.length === 0) {
-        gioHangElement.innerHTML = '<p>Giỏ hàng trống</p>';
+    const user = getCurrentUser();
+    if (!user) {
+        alert('Bạn cần đăng nhập để thêm vào giỏ hàng');
+        window.location.href = "login.html";
         return;
     }
+
+    if (!user.products) user.products = [];
     
-    let html = '<table><thead><tr><th>Sản phẩm</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th><th></th></tr></thead><tbody>';
-    
-    gioHang.forEach(item => {
-        html += `
-            <tr>
-                <td>${item.name}</td>
-                <td>
-                    <button onclick="capNhatSoLuong('${item.id}', ${item.quantity - 1})">-</button>
-                    <span>${item.quantity}</span>
-                    <button onclick="capNhatSoLuong('${item.id}', ${item.quantity + 1})">+</button>
-                </td>
-                <td>${formatCurrency(item.price)}</td>
-                <td>${formatCurrency(item.price * item.quantity)}</td>
-                <td><button onclick="xoaSanPham('${item.id}')">Xóa</button></td>
-            </tr>
-        `;
+    // Check if product already exists in cart
+    for (let p of user.products) {
+        if (p.ma == sanPham.ma) {
+            p.soluong++;
+            capNhatMoiThu();
+            return;
+        }
+    }
+
+    // If not exists, add new
+    user.products.push({
+        ma: sanPham.ma,
+        soluong: 1,
+        date: new Date()
     });
     
-    html += `</tbody><tfoot><tr><td colspan="3">Tổng cộng:</td><td colspan="2">${formatCurrency(tinhTongTien())}</td></tr></tfoot></table>`;
-    html += '<button onclick="datHang()" class="btn-dathang">Đặt hàng</button>';
-    
-    gioHangElement.innerHTML = html;
+    capNhatMoiThu();
+}
+
+function capNhatSoLuong(id, quantity) {
+    const user = getCurrentUser();
+    if (!user || !user.products) return;
+
+    for (let p of user.products) {
+        if (p.ma == id) {
+            p.soluong = quantity;
+            if (p.soluong <= 0) {
+                return xoaSanPham(id);
+            }
+            break;
+        }
+    }
+
+    capNhatMoiThu();
+}
+
+function xoaSanPham(id) {
+    const user = getCurrentUser();
+    if (!user || !user.products) return;
+
+    user.products = user.products.filter(p => p.ma != id);
+    capNhatMoiThu();
+}
+
+function tinhTongTien() {
+    const user = getCurrentUser();
+    if (!user || !user.products) return 0;
+
+    return user.products.reduce((total, p) => {
+        const sp = timKiemTheoMa(list_products, p.ma);
+        const gia = (sp.promo.name == 'giareonline' ? sp.promo.value : sp.price);
+        return total + stringToNum(gia) * p.soluong;
+    }, 0);
+}
+
+function capNhatHienThiGioHang() {
+    const user = getCurrentUser();
+    if (!user) return;
+
+    // Cập nhật số lượng sản phẩm
+    const cartCount = document.getElementsByClassName('cart-count');
+    for (let e of cartCount) {
+        e.innerHTML = user.products ? user.products.length : 0;
+    }
+
+    // Cập nhật tổng tiền
+    const cartTotalPrice = document.getElementsByClassName('cart-price');
+    for (let e of cartTotalPrice) {
+        e.innerHTML = numToString(tinhTongTien());
+    }
 }
 
 // Lấy thông tin người dùng hiện tại
