@@ -574,33 +574,6 @@ function addHeader() {
                     </div>
                 </form>
             </div>
-
-            <div class="tools-member">
-                <div class="member">
-                    <a onclick="showTaiKhoan(true)" id="btnDangNhap">
-                        <i class="fa fa-user"></i>
-                        Đăng nhập
-                    </a>
-                    <div class="menuMember hide" id="menuMember">
-                        <a href="#" onclick="showAccountInfo()">
-                            <i class="fa fa-user-circle-o"></i>
-                            Tài khoản của tôi
-                        </a>
-                        <a href="#" onclick="logOut()">
-                            <i class="fa fa-sign-out"></i>
-                            Đăng xuất
-                        </a>
-                    </div>
-                </div> <!-- End Member -->
-
-                <div class="cart">
-                    <a href="giohang.html">
-                        <i class="fa fa-shopping-cart"></i>
-                        <span>Giỏ hàng</span>
-                        <span class="cart-number"></span>
-                    </a>
-                </div> <!-- End Cart -->
-            </div><!-- End Tools Member -->
         </div> <!-- End Content -->
     </div> <!-- End Header -->
     `);
