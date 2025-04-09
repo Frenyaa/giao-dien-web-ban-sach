@@ -369,10 +369,10 @@ document.addEventListener('DOMContentLoaded', function() {
     showTab('home');
 });
 
-// Hàm hiển thị danh sách đơn hàng
+// Hiển thị danh sách đơn hàng
 function hienThiDanhSachDonHang() {
-    const orders = getOrdersFromLocalStorage();
-    const tbody = document.getElementById('danhSachDonHang');
+    const orders = getOrders();
+    const tbody = document.getElementById('ordersList');
     tbody.innerHTML = '';
 
     orders.forEach(order => {
@@ -382,44 +382,13 @@ function hienThiDanhSachDonHang() {
             <td>${formatDate(order.date)}</td>
             <td>${order.customerName}</td>
             <td>${formatCurrency(order.total)}</td>
-            <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
+            <td><span class="status ${order.status}">${formatOrderStatus(order.status)}</span></td>
             <td class="actions">
                 ${getActionButtons(order.status, order.id)}
             </td>
         `;
         tbody.appendChild(tr);
     });
-}
-
-// Lấy danh sách đơn hàng từ localStorage
-function getOrdersFromLocalStorage() {
-    return JSON.parse(localStorage.getItem('orders')) || [];
-}
-
-// Định dạng ngày tháng
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN');
-}
-
-// Định dạng tiền tệ
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND'
-    }).format(amount);
-}
-
-// Lấy text hiển thị trạng thái
-function getStatusText(status) {
-    const statusMap = {
-        'waiting': 'Chờ xác nhận',
-        'confirmed': 'Đã xác nhận',
-        'delivering': 'Đang giao',
-        'delivered': 'Đã giao',
-        'cancelled': 'Đã hủy'
-    };
-    return statusMap[status.toLowerCase()] || status;
 }
 
 // Lấy các nút hành động tương ứng với trạng thái
@@ -450,19 +419,15 @@ function getActionButtons(status, orderId) {
 }
 
 // Xử lý tìm kiếm đơn hàng
-function timKiemDonHang(keyword) {
-    const orders = getOrdersFromLocalStorage();
-    const filteredOrders = orders.filter(order => 
-        order.id.toLowerCase().includes(keyword.toLowerCase()) ||
-        order.customerName.toLowerCase().includes(keyword.toLowerCase())
-    );
-    
+function timKiemDonHang() {
+    const keyword = document.getElementById('searchInput').value;
+    const filteredOrders = searchOrders(keyword);
     hienThiKetQuaTimKiem(filteredOrders);
 }
 
 // Hiển thị kết quả tìm kiếm
 function hienThiKetQuaTimKiem(orders) {
-    const tbody = document.getElementById('danhSachDonHang');
+    const tbody = document.getElementById('ordersList');
     tbody.innerHTML = '';
 
     orders.forEach(order => {
@@ -472,7 +437,7 @@ function hienThiKetQuaTimKiem(orders) {
             <td>${formatDate(order.date)}</td>
             <td>${order.customerName}</td>
             <td>${formatCurrency(order.total)}</td>
-            <td><span class="status ${order.status.toLowerCase()}">${getStatusText(order.status)}</span></td>
+            <td><span class="status ${order.status}">${formatOrderStatus(order.status)}</span></td>
             <td class="actions">
                 ${getActionButtons(order.status, order.id)}
             </td>
@@ -483,56 +448,47 @@ function hienThiKetQuaTimKiem(orders) {
 
 // Lọc đơn hàng theo khoảng ngày
 function locDonHangTheoKhoangNgay() {
-    const fromDate = new Date(document.getElementById('fromDate').value);
-    const toDate = new Date(document.getElementById('toDate').value);
+    const startDate = new Date(document.getElementById('startDate').value);
+    const endDate = new Date(document.getElementById('endDate').value);
     
-    if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         alert('Vui lòng chọn khoảng thời gian hợp lệ');
         return;
     }
 
-    const orders = getOrdersFromLocalStorage();
-    const filteredOrders = orders.filter(order => {
-        const orderDate = new Date(order.date);
-        return orderDate >= fromDate && orderDate <= toDate;
-    });
-    
+    const filteredOrders = getOrdersByDateRange(startDate, endDate);
     hienThiKetQuaTimKiem(filteredOrders);
-}
-
-// Cập nhật trạng thái đơn hàng
-function capNhatTrangThaiDonHang(orderId, newStatus) {
-    const orders = getOrdersFromLocalStorage();
-    const orderIndex = orders.findIndex(order => order.id === orderId);
-    
-    if (orderIndex !== -1) {
-        orders[orderIndex].status = newStatus;
-        localStorage.setItem('orders', JSON.stringify(orders));
-        hienThiDanhSachDonHang();
-    }
 }
 
 // Các hàm xử lý hành động
 function xacNhanDonHang(orderId) {
     if (confirm('Xác nhận đơn hàng này?')) {
-        capNhatTrangThaiDonHang(orderId, 'confirmed');
+        if (updateOrderStatus(orderId, 'confirmed')) {
+            hienThiDanhSachDonHang();
+        }
     }
 }
 
 function huyDonHang(orderId) {
     if (confirm('Bạn có chắc muốn hủy đơn hàng này?')) {
-        capNhatTrangThaiDonHang(orderId, 'cancelled');
+        if (updateOrderStatus(orderId, 'cancelled')) {
+            hienThiDanhSachDonHang();
+        }
     }
 }
 
 function chuyenSangDangGiao(orderId) {
     if (confirm('Chuyển đơn hàng sang trạng thái đang giao?')) {
-        capNhatTrangThaiDonHang(orderId, 'delivering');
+        if (updateOrderStatus(orderId, 'delivering')) {
+            hienThiDanhSachDonHang();
+        }
     }
 }
 
 function hoanThanhDonHang(orderId) {
     if (confirm('Xác nhận đơn hàng đã giao thành công?')) {
-        capNhatTrangThaiDonHang(orderId, 'delivered');
+        if (updateOrderStatus(orderId, 'delivered')) {
+            hienThiDanhSachDonHang();
+        }
     }
 } 
