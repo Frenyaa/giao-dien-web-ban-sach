@@ -551,12 +551,13 @@ function addTopNav() {
 // Thêm header
 function addHeader() {
     document.write(`
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
     <div class="header group">
         <div class="logo">
-            <a href="index.html">
-                <img src="img/logo.jpg" alt="Trang chủ Bookstore" title="Trang chủ Bookstore" style="width: 250px;">
+            <a href="index.html" class="logo">
+                <div class="logo-text">Book<span>Store</span></div>
             </a>
-        </div> <!-- End Logo -->
+        </div>
 
         <div class="content">
             <div class="search-header" style="position: relative; left: 162px; top: 1px;">
