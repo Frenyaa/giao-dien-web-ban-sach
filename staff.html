@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Nhân viên - Thế giới sách</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+
+    <!-- Load font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        crossorigin="anonymous">
+
+    <!-- Our files -->
+    <link rel="stylesheet" href="css/admin/style.css">
+    <link rel="stylesheet" href="css/admin/progress.css">
+
+    <script src="data/products.js"></script>
+    <script src="js/classes.js"></script>
+    <script src="js/dungchung.js"></script>
+    <script src="js/staff.js"></script>
+</head>
+
+<body>
+    <header>
+        <h2>Thế giới sách - Nhân viên</h2>
+    </header>
+
+    <!-- Menu -->
+    <aside class="sidebar">
+        <ul class="nav">
+            <li class="nav-title">MENU</li>
+            <li class="nav-item"><a class="nav-link active"><i class="fa fa-home"></i> Trang Chủ</a></li>
+            <li class="nav-item"><a class="nav-link"><i class="fa fa-book"></i> Quản lý sách</a></li>
+            <li class="nav-item"><a class="nav-link"><i class="fa fa-file-text-o"></i> Đơn Hàng</a></li>
+            <li class="nav-item">
+                <hr>
+            </li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link" onclick="logOutStaff(); return true;">
+                    <i class="fa fa-arrow-left"></i>
+                    Đăng xuất (về Trang chủ)
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Khung hiển thị chính -->
+    <div class="main">
+        <div class="home">
+            <div class="canvasContainer">
+                <canvas id="myChart1"></canvas>
+            </div>
+
+            <div class="canvasContainer">
+                <canvas id="myChart2"></canvas>
+            </div>
+        </div>
+
+        <!-- Quản lý sách -->
+        <div class="quanlysach">
+            <table class="table-header">
+                <tr>
+                    <th title="Sắp xếp" style="width: 5%" onclick="sortBooksTable('stt')">Stt <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 10%" onclick="sortBooksTable('masach')">Mã sách <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 30%" onclick="sortBooksTable('ten')">Tên sách <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 15%" onclick="sortBooksTable('tacgia')">Tác giả <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 15%" onclick="sortBooksTable('gia')">Giá <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 10%" onclick="sortBooksTable('soluong')">Số lượng <i class="fa fa-sort"></i></th>
+                    <th style="width: 15%">Hành động</th>
+                </tr>
+            </table>
+
+            <div class="table-content">
+            </div>
+
+            <div class="table-footer">
+                <select name="kieuTimSach">
+                    <option value="ma">Tìm theo mã</option>
+                    <option value="ten">Tìm theo tên</option>
+                    <option value="tacgia">Tìm theo tác giả</option>
+                </select>
+                <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemSach(this)">
+                <button onclick="document.getElementById('khungThemSach').style.transform = 'scale(1)'; autoMaSach()">
+                    <i class="fa fa-plus-square"></i>
+                    Thêm sách
+                </button>
+            </div>
+
+            <div id="khungThemSach" class="overlay">
+                <span class="close" onclick="this.parentElement.style.transform = 'scale(0)';">&times;</span>
+                <table class="overlayTable table-outline table-content table-header">
+                    <tr>
+                        <th colspan="2">Thêm Sách</th>
+                    </tr>
+                    <tr>
+                        <td>Mã sách:</td>
+                        <td><input type="text" id="masachThem"></td>
+                    </tr>
+                    <tr>
+                        <td>Tên sách:</td>
+                        <td><input type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Tác giả:</td>
+                        <td><input type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Thể loại:</td>
+                        <td>
+                            <select>
+                                <option value="vanhoc">Văn học</option>
+                                <option value="khoahoc">Khoa học</option>
+                                <option value="tieuthuyet">Tiểu thuyết</option>
+                                <option value="truyentranh">Truyện tranh</option>
+                                <option value="sachgiaokhoa">Sách giáo khoa</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hình ảnh:</td>
+                        <td>
+                            <img class="hinhDaiDien" id="anhDaiDienSachThem" src="">
+                            <input type="file" accept="image/*" onchange="capNhatAnhSach(this.files, 'anhDaiDienSachThem')">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Giá tiền:</td>
+                        <td><input type="text"></td>
+                    </tr>
+                    <tr>
+                        <td>Số lượng:</td>
+                        <td><input type="number"></td>
+                    </tr>
+                    <tr>
+                        <td>Mô tả:</td>
+                        <td><textarea rows="4"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="table-footer"> <button onclick="themSach()">THÊM</button> </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="khungSuaSach" class="overlay"></div>
+        </div>
+
+        <!-- Đơn Hàng -->
+        <div class="donhang">
+            <table class="table-header">
+                <tr>
+                    <th title="Sắp xếp" style="width: 5%" onclick="sortDonHangTable('stt')">Stt <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 13%" onclick="sortDonHangTable('madon')">Mã đơn <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 20%" onclick="sortDonHangTable('khach')">Khách hàng <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 20%" onclick="sortDonHangTable('sanpham')">Sản phẩm <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 15%" onclick="sortDonHangTable('tongtien')">Tổng tiền <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('ngaygio')">Ngày giờ <i class="fa fa-sort"></i></th>
+                    <th title="Sắp xếp" style="width: 10%" onclick="sortDonHangTable('trangthai')">Trạng thái <i class="fa fa-sort"></i></th>
+                    <th style="width: 10%">Hành động</th>
+                </tr>
+            </table>
+
+            <div class="table-content">
+            </div>
+
+            <div class="table-footer">
+                <div class="timTheoNgay">
+                    Từ ngày: <input type="date" id="fromDate">
+                    Đến ngày: <input type="date" id="toDate">
+                    <button onclick="locDonHangTheoKhoangNgay()"><i class="fa fa-search"></i> Tìm</button>
+                </div>
+
+                <select name="kieuTimDonHang">
+                    <option value="ma">Tìm theo mã đơn</option>
+                    <option value="khachhang">Tìm theo tên khách hàng</option>
+                    <option value="trangThai">Tìm theo trạng thái</option>
+                </select>
+                <input type="text" placeholder="Tìm kiếm..." onkeyup="timKiemDonHang(this)">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+</body>
+
+</html> 
