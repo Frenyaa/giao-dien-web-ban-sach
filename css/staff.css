@@ -130,4 +130,350 @@
 
 .btn-view:hover {
     background-color: #1976D2;
+}
+
+/* Styles cho trạng thái đơn hàng */
+.trangthai {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.waiting {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.confirmed {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.delivering {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.delivered {
+    background-color: #f5f5f5;
+    color: #424242;
+}
+
+.cancelled {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+/* Styles cho các nút hành động */
+.btn-confirm {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-confirm:hover {
+    background-color: #1976D2;
+}
+
+.btn-cancel {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-left: 8px;
+    transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #d32f2f;
+}
+
+.btn-deliver {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-deliver:hover {
+    background-color: #388E3C;
+}
+
+.btn-complete {
+    background-color: #9C27B0;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+}
+
+.btn-complete:hover {
+    background-color: #7B1FA2;
+}
+
+/* Styles cho bảng đơn hàng */
+.donhang .table-content {
+    margin-top: 20px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.donhang .table-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.donhang .table-content th,
+.donhang .table-content td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.donhang .table-content th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+    position: sticky;
+    top: 0;
+}
+
+.donhang .table-content tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Styles cho phần tìm kiếm và lọc */
+.timTheoNgay {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.timTheoNgay input[type="date"] {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.timTheoNgay button {
+    padding: 6px 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.timTheoNgay button:hover {
+    background: #1976D2;
+}
+
+/* Staff Orders Management Styles */
+
+/* Main container */
+.orders-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Search and filter section */
+.search-filter {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.date-filter {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.date-filter input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Orders table */
+.orders-table {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.orders-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.orders-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.orders-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Status badges */
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status.waiting {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status.confirmed {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.status.delivering {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status.delivered {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.status.cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Action buttons */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.actions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+
+.btn-deliver {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-deliver:hover {
+    background-color: #138496;
+}
+
+.btn-complete {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-complete:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .orders-container {
+        padding: 10px;
+    }
+    
+    .search-filter {
+        padding: 15px;
+    }
+    
+    .date-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .orders-table {
+        overflow-x: auto;
+    }
+    
+    .orders-table th,
+    .orders-table td {
+        padding: 8px 10px;
+    }
+    
+    .actions {
+        flex-direction: column;
+    }
+    
+    .actions button {
+        width: 100%;
+    }
 } 

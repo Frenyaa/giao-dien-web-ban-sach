@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng - Bookstore</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/staff.css">
+    <script src="js/dungchung.js"></script>
+    <script src="js/staff.js"></script>
+</head>
+<body>
+    <div class="staff-container">
+        <div class="staff-header">
+            <h1>Quản lý đơn hàng</h1>
+            <div class="staff-search">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm đơn hàng..." oninput="timKiemDonHang(this.value)">
+            </div>
+        </div>
+
+        <div class="timTheoNgay">
+            <label>Từ ngày:</label>
+            <input type="date" id="fromDate">
+            <label>Đến ngày:</label>
+            <input type="date" id="toDate">
+            <button onclick="locDonHangTheoKhoangNgay()">Lọc</button>
+        </div>
+
+        <div class="donhang">
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Ngày đặt</th>
+                            <th>Khách hàng</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="danhSachDonHang">
+                        <!-- Danh sách đơn hàng sẽ được thêm vào đây bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            addHeader();
+            checkLoginStaff();
+            hienThiDanhSachDonHang();
+        }
+    </script>
+</body>
+</html> 

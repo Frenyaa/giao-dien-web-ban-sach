@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng - Nhà sách trực tuyến</title>
+    <link rel="stylesheet" href="../css/staff.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="orders-container">
+        <h1>Quản lý đơn hàng</h1>
+        
+        <!-- Search and Filter Section -->
+        <div class="search-filter">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm đơn hàng..." onkeyup="timKiemDonHang()">
+            </div>
+            
+            <div class="date-filter">
+                <label for="startDate">Từ ngày:</label>
+                <input type="date" id="startDate">
+                
+                <label for="endDate">Đến ngày:</label>
+                <input type="date" id="endDate">
+                
+                <button onclick="locDonHangTheoKhoangNgay()" class="btn-confirm">
+                    <i class="fas fa-filter"></i> Lọc
+                </button>
+            </div>
+        </div>
+        
+        <!-- Orders Table -->
+        <div class="orders-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Ngày đặt</th>
+                        <th>Khách hàng</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersList">
+                    <!-- Orders will be populated here by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/staff.js"></script>
+    <script>
+        // Check if staff is logged in when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStaff();
+            hienThiDanhSachDonHang();
+        });
+    </script>
+</body>
+</html> 

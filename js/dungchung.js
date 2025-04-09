@@ -554,7 +554,7 @@ function addHeader() {
     <div class="header group">
         <div class="logo">
             <a href="index.html">
-                <img src="img/trangchu.png" alt="Trang chủ Thế Giới Sách" title="Trang chủ Thế Giới Sách">
+                <img src="img/logo.jpg" alt="Trang chủ Bookstore" title="Trang chủ Bookstore" style="width: 250px;">
             </a>
         </div> <!-- End Logo -->
 
