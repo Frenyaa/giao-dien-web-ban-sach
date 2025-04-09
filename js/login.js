@@ -39,8 +39,11 @@ function dangKy() {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
 
+    // Tự động đăng nhập sau khi đăng ký
+    localStorage.setItem('currentUser', username);
+    
     alert('Đăng ký thành công!');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html'; // Chuyển thẳng về trang chủ
     return false;
 }
 
