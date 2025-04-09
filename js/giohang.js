@@ -10,11 +10,15 @@ window.onload = function () {
 	// for (var t of tags) addTags(t, "index.html?search=" + t)
 
 	currentuser = getCurrentUser();
-	addProductToTable(currentuser);
+	if (currentuser) {
+		addProductToTable(currentuser);
+		capNhatHienThiGioHang();
+	}
 }
 
 function addProductToTable(user) {
 	var table = document.getElementsByClassName('listSanPham')[0];
+	if (!table) return; // Nếu không có bảng thì thoát
 
 	var s = `
 		<tbody>
@@ -59,6 +63,8 @@ function addProductToTable(user) {
 		var masp = user.products[i].ma;
 		var soluongSp = user.products[i].soluong;
 		var p = timKiemTheoMa(list_products, masp);
+		if (!p) continue;
+
 		var price = (p.promo.name == 'giareonline' ? p.promo.value : p.price);
 		var thoigian = new Date(user.products[i].date).toLocaleString();
 		var thanhtien = stringToNum(price) * soluongSp;
@@ -83,7 +89,6 @@ function addProductToTable(user) {
 				<td class="noPadding"> <i class="fa fa-trash" onclick="xoaSanPhamTrongGioHang(` + i + `)"></i> </td>
 			</tr>
 		`;
-		// Chú ý nháy cho đúng ở giamsoluong, tangsoluong
 		totalPrice += thanhtien;
 	}
 
