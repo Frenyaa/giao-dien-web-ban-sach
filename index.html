@@ -191,6 +191,29 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="js/login.js"></script>
+	<script src="js/giohang.js"></script>
+	<script>
+		// Kiểm tra và hiển thị trạng thái đăng nhập
+		window.onload = function() {
+			const currentUser = localStorage.getItem('currentUser');
+			const btnDangNhap = document.getElementById('btnDangNhap');
+			const btnDangKy = document.getElementById('btnDangKy');
+
+			if (currentUser) {
+				// Đã đăng nhập
+				btnDangNhap.innerHTML = '<i class="fa fa-user"></i> ' + currentUser;
+				btnDangNhap.href = '#';
+				btnDangKy.innerHTML = 'Đăng xuất';
+				btnDangKy.href = '#';
+				btnDangKy.onclick = function() {
+					dangXuat();
+					return false;
+				};
+			}
+		}
+	</script>
 </body>
 
 </html>
