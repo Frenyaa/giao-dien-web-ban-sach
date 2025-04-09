@@ -45,6 +45,35 @@
 <body>
 	<script> addTopNav(); </script>
 
+	<header>
+		<nav>
+			<div class="logo">
+				<a href="index.html">
+					<img src="img/logo.png" alt="BookStore Logo">
+				</a>
+			</div>
+			<div class="search-bar">
+				<input type="text" placeholder="Tìm kiếm sách...">
+				<button><i class="fa fa-search"></i></button>
+			</div>
+			<div class="user-actions">
+				<a href="login.html" id="btnDangNhap" class="btn">
+					<i class="fa fa-user"></i> Đăng nhập
+				</a>
+				<a href="register.html" id="btnDangKy" class="btn">
+					<i class="fa fa-user-plus"></i> Đăng ký
+				</a>
+				<a href="staff_login.html" class="btn btn-staff">
+					<i class="fa fa-id-card"></i> Nhân viên
+				</a>
+				<a href="giohang.html" class="btn">
+					<i class="fa fa-shopping-cart"></i>
+					Giỏ hàng (<span class="cart-count">0</span>)
+				</a>
+			</div>
+		</nav>
+	</header>
+
 	<section>
 		<script> addHeader(); </script>
 
@@ -214,16 +243,6 @@
 			}
 		}
 	</script>
-
-	<div class="user-actions">
-		<a href="login.html" id="btnDangNhap" class="btn">Đăng nhập</a>
-		<a href="register.html" id="btnDangKy" class="btn">Đăng ký</a>
-		<a href="staff_login.html" class="btn btn-staff">Nhân viên</a>
-		<a href="giohang.html" class="btn">
-			<i class="fa fa-shopping-cart"></i>
-			Giỏ hàng (<span class="cart-count">0</span>)
-		</a>
-	</div>
 </body>
 
 </html>

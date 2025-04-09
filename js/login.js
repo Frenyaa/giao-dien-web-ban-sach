@@ -4,12 +4,12 @@ if (!localStorage.getItem('users')) {
 }
 
 // Đăng ký tài khoản mới
-function dangKy() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const ho = document.getElementById('ho').value;
-    const ten = document.getElementById('ten').value;
-    const email = document.getElementById('email').value;
+function register(form) {
+    const username = form.newUsername.value.trim();
+    const password = form.newPassword.value.trim();
+    const ho = form.ho.value.trim();
+    const ten = form.ten.value.trim();
+    const email = form.email.value.trim();
 
     if (!username || !password || !ho || !ten || !email) {
         alert('Vui lòng điền đầy đủ thông tin!');
@@ -40,10 +40,10 @@ function dangKy() {
     localStorage.setItem('users', JSON.stringify(users));
 
     // Tự động đăng nhập sau khi đăng ký
-    localStorage.setItem('currentUser', username);
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
     
     alert('Đăng ký thành công!');
-    window.location.href = 'index.html'; // Chuyển thẳng về trang chủ
+    location.reload(); // Làm mới trang để cập nhật trạng thái đăng nhập
     return false;
 }
 
@@ -58,17 +58,13 @@ function dangNhap() {
     }
 
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    console.log('Users in storage:', users); // Debug: kiểm tra danh sách users
+    console.log('Users in storage:', users);
 
     const user = users.find(u => u.username === username);
     if (!user) {
         alert('Tài khoản không tồn tại!');
         return false;
     }
-
-    console.log('Found user:', user); // Debug: kiểm tra user tìm thấy
-    console.log('Input password:', password); // Debug: kiểm tra password nhập vào
-    console.log('Stored password:', user.password); // Debug: kiểm tra password trong storage
 
     if (user.password !== password) {
         alert('Mật khẩu không đúng!');
@@ -80,8 +76,8 @@ function dangNhap() {
         return false;
     }
 
-    // Lưu thông tin đăng nhập
-    localStorage.setItem('currentUser', username);
+    // Lưu toàn bộ thông tin user
+    localStorage.setItem('currentUser', JSON.stringify(user));
     
     // Chuyển về trang chủ
     window.location.href = 'index.html';
@@ -96,15 +92,54 @@ function dangXuat() {
 
 // Kiểm tra trạng thái đăng nhập
 function checkLoginStatus() {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const user = users.find(u => u.username === currentUser);
-        if (user) {
-            return true;
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (currentUserStr) {
+        try {
+            const currentUser = JSON.parse(currentUserStr);
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            // Tìm user trong danh sách và cập nhật thông tin mới nhất
+            const updatedUser = users.find(u => u.username === currentUser.username);
+            if (updatedUser && !updatedUser.off) {
+                // Cập nhật lại thông tin user hiện tại
+                localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+                return true;
+            }
+        } catch (e) {
+            console.error('Lỗi khi parse thông tin user:', e);
         }
     }
     return false;
+}
+
+// Lấy thông tin user hiện tại
+function getCurrentUser() {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (currentUserStr) {
+        try {
+            return JSON.parse(currentUserStr);
+        } catch (e) {
+            console.error('Lỗi khi parse thông tin user:', e);
+        }
+    }
+    return null;
+}
+
+// Cập nhật thông tin giỏ hàng
+function updateUserCart(products) {
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        currentUser.products = products;
+        // Cập nhật trong localStorage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        // Cập nhật trong danh sách users
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const userIndex = users.findIndex(u => u.username === currentUser.username);
+        if (userIndex !== -1) {
+            users[userIndex] = currentUser;
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+    }
 }
 
 // Debug: Hiển thị thông tin trong localStorage
