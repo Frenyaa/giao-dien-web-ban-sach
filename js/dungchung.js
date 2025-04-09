@@ -207,11 +207,95 @@ function closeLoginForm() {
     document.getElementById('customer-login-form').style.display = 'none';
 }
 
+// Hiển thị form tài khoản
+function showTaiKhoan(show) {
+    var div = document.getElementsByClassName('containTaikhoan')[0];
+    if (!div) return;
+
+    if (show) {
+        div.style.transform = "scale(1)";
+    } else {
+        div.style.transform = "scale(0)";
+    }
+}
+
+// Chuyển tab đăng nhập/đăng ký
+function setupTabs() {
+    var tabs = document.querySelectorAll('.tab a');
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(function(t) {
+                t.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            this.parentElement.classList.add('active');
+            
+            // Hide all tab content
+            document.querySelectorAll('.tab-content > div').forEach(function(content) {
+                content.style.display = 'none';
+            });
+            
+            // Show selected tab content
+            var target = this.getAttribute('href');
+            document.querySelector(target).style.display = 'block';
+        });
+    });
+}
+
+// Hiển thị form đăng nhập khi click vào nút đăng nhập
+function setupEventTaiKhoan() {
+    var btnDangNhap = document.getElementById('btnDangNhap');
+    if (btnDangNhap) {
+        btnDangNhap.onclick = function() {
+            showTaiKhoan(true);
+        }
+    }
+
+    // Setup tabs khi document ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupTabs);
+    } else {
+        setupTabs();
+    }
+
+    // Setup form labels
+    var inputs = document.querySelectorAll('.field-wrap input, .field-wrap select');
+    inputs.forEach(function(input) {
+        // Initial state
+        if (input.value) {
+            input.previousElementSibling.classList.add('active');
+        }
+
+        // Focus event
+        input.addEventListener('focus', function() {
+            this.previousElementSibling.classList.add('active', 'highlight');
+        });
+
+        // Blur event
+        input.addEventListener('blur', function() {
+            if (this.value === '') {
+                this.previousElementSibling.classList.remove('active', 'highlight');
+            } else {
+                this.previousElementSibling.classList.remove('highlight');
+            }
+        });
+    });
+}
+
 // Hàm đăng nhập xử lý cả khách hàng và nhân viên
 function login(form) {
-    const username = form.username.value;
-    const password = form.password.value;
+    const username = form.username.value.trim();
+    const password = form.password.value.trim();
     const accountType = form.accountType.value;
+
+    if (!username || !password) {
+        alert('Vui lòng nhập đầy đủ thông tin!');
+        return false;
+    }
 
     if (accountType === 'staff') {
         // Đăng nhập cho nhân viên
@@ -264,66 +348,6 @@ function checkStaffLogin() {
     if (!localStorage.getItem('staffLoggedIn')) {
         window.location.href = 'index.html';
     }
-}
-
-// Tạo event, hiệu ứng cho form tài khoản
-function setupEventTaiKhoan() {
-    var taikhoan = document.getElementsByClassName('taikhoan')[0];
-    var list = taikhoan.getElementsByTagName('input');
-
-    // Tạo eventlistener cho input để tạo hiệu ứng label
-    // Gồm 2 event onblur, onfocus được áp dụng cho từng input trong list bên trên
-    ['blur', 'focus'].forEach(function (evt) {
-        for (var i = 0; i < list.length; i++) {
-            list[i].addEventListener(evt, function (e) {
-                var label = this.previousElementSibling; // lấy element ĐỨNG TRƯỚC this, this ở đây là input
-                if (e.type === 'blur') { // khi ấn chuột ra ngoài
-                    if (this.value === '') { // không có value trong input thì đưa label lại như cũ
-                        label.classList.remove('active');
-                        label.classList.remove('highlight');
-                    } else { // nếu có chữ thì chỉ tắt hightlight chứ không tắt active, active là dịch chuyển lên trên
-                        label.classList.remove('highlight');
-                    }
-                } else if (e.type === 'focus') { // khi focus thì label active + hightlight
-                    label.classList.add('active');
-                    label.classList.add('highlight');
-                }
-            });
-        }
-    })
-
-    // Event chuyển tab login-signup
-    var tab = document.getElementsByClassName('tab');
-    for (var i = 0; i < tab.length; i++) {
-        var a = tab[i].getElementsByTagName('a')[0];
-        a.addEventListener('click', function (e) {
-            e.preventDefault(); // tắt event mặc định
-
-            // Thêm active(màu xanh lá) cho li chứa tag a này => ấn login thì login xanh, signup thì signup sẽ xanh
-            this.parentElement.classList.add('active');
-
-            // Sau khi active login thì phải tắt active sigup và ngược lại
-            // Trường hợp a này thuộc login => <li>Login</li> sẽ có nextElement là <li>SignUp</li>
-            if (this.parentElement.nextElementSibling) {
-                this.parentElement.nextElementSibling.classList.remove('active');
-            }
-            // Trường hợp a này thuộc signup => <li>SignUp</li> sẽ có .previousElement là <li>Login</li>
-            if (this.parentElement.previousElementSibling) {
-                this.parentElement.previousElementSibling.classList.remove('active');
-            }
-
-            // Ẩn phần nhập của login nếu ấn signup và ngược lại
-            // href của 2 tab signup và login là #signup và #login -> tiện cho việc getElement dưới đây
-            var target = this.href.split('#')[1];
-            document.getElementById(target).style.display = 'block';
-
-            var hide = (target == 'login' ? 'signup' : 'login');
-            document.getElementById(hide).style.display = 'none';
-        })
-    }
-
-    // Đoạn code tạo event trên được chuyển về js thuần từ code jquery
-    // Code jquery cho phần tài khoản được lưu ở cuối file này
 }
 
 // Cập nhật số lượng hàng trong giỏ hàng + Tên current user
@@ -873,37 +897,4 @@ function logOutStaff() {
     localStorage.removeItem('staffLoggedIn');
     localStorage.removeItem('staffName');
     window.location.href = 'index.html';
-}
-
-// Hiển thị form tài khoản
-function showTaiKhoan(show) {
-    var value = (show ? "scale(1)" : "scale(0)");
-    var div = document.getElementsByClassName('containTaikhoan')[0];
-    div.style.transform = value;
-}
-
-// Chuyển tab đăng nhập/đăng ký
-$(document).ready(function() {
-    $('.tab a').on('click', function (e) {
-        e.preventDefault();
-        
-        $(this).parent().addClass('active');
-        $(this).parent().siblings().removeClass('active');
-        
-        target = $(this).attr('href');
-
-        $('.tab-content > div').not(target).hide();
-        
-        $(target).fadeIn(600);
-    });
-});
-
-// Hiển thị form đăng nhập khi click vào nút đăng nhập
-function setupEventTaiKhoan() {
-    var btnDangNhap = document.getElementById('btnDangNhap');
-    if (btnDangNhap) {
-        btnDangNhap.onclick = function() {
-            showTaiKhoan(true);
-        }
-    }
 }
