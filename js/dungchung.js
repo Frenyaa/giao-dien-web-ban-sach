@@ -187,103 +187,83 @@ function updateListUser(u, newData) {
     setListUser(list);
 }
 
-// Hàm đăng nhập chung
-function login() {
+// Hiển thị form đăng nhập nhân viên
+function showStaffLoginForm() {
+    document.getElementById('staff-login-form').style.display = 'block';
+}
+
+// Đóng form đăng nhập nhân viên
+function closeStaffLoginForm() {
+    document.getElementById('staff-login-form').style.display = 'none';
+}
+
+// Hiển thị form đăng nhập khách hàng
+function showLoginForm() {
+    document.getElementById('customer-login-form').style.display = 'block';
+}
+
+// Đóng form đăng nhập khách hàng
+function closeLoginForm() {
+    document.getElementById('customer-login-form').style.display = 'none';
+}
+
+// Đăng nhập cho nhân viên
+function loginAsStaff() {
+    const username = document.getElementById('staffUsername').value;
+    const password = document.getElementById('staffPassword').value;
+
+    const staff = staffAccounts.find(account => 
+        account.username === username && account.password === password
+    );
+
+    if (staff) {
+        localStorage.setItem('staffLoggedIn', 'true');
+        localStorage.setItem('staffName', staff.name);
+        window.location.href = 'staff.html';
+    } else {
+        alert('Tài khoản hoặc mật khẩu không đúng!');
+    }
+}
+
+// Đăng nhập cho khách hàng
+function loginAsCustomer() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    const userType = document.getElementById('userType').value;
 
-    if (userType === 'staff') {
-        // Kiểm tra đăng nhập nhân viên
-        const staff = staffAccounts.find(account => 
-            account.username === username && account.password === password
-        );
-
-        if (staff) {
-            localStorage.setItem('staffLoggedIn', 'true');
-            localStorage.setItem('staffName', staff.name);
-            window.location.href = 'staff.html';
+    const user = listUser.find(u => u.username === username && u.pass === password);
+    
+    if (user) {
+        if(user.off) {
+            alert('Tài khoản này đang bị khoá. Không thể đăng nhập.');
             return;
         }
-    } else {
-        // Kiểm tra đăng nhập khách hàng
-        const user = listUser.find(u => u.username === username && u.pass === password);
-        if (user) {
-            localStorage.setItem('userLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = 'index.html';
-            return;
-        }
-    }
-
-    // Nếu đăng nhập thất bại
-    alert('Tài khoản hoặc mật khẩu không đúng!');
-}
-
-// Hàm kiểm tra đăng nhập nhân viên
-function checkStaffLogin() {
-    if (!localStorage.getItem('staffLoggedIn')) {
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('currentUser', JSON.stringify(user));
         window.location.href = 'index.html';
+        location.reload();
+    } else {
+        alert('Tài khoản hoặc mật khẩu không đúng!');
     }
 }
 
-// Hàm đăng xuất nhân viên
+// Đăng xuất
+function logOut() {
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('currentUser');
+    location.reload();
+}
+
+// Đăng xuất nhân viên
 function logOutStaff() {
     localStorage.removeItem('staffLoggedIn');
     localStorage.removeItem('staffName');
     window.location.href = 'index.html';
 }
 
-// Hàm hiển thị form đăng nhập
-function showLoginForm() {
-    const loginForm = document.createElement('div');
-    loginForm.className = 'login-form';
-    loginForm.innerHTML = `
-        <div class="login-content">
-            <span class="close" onclick="this.parentElement.parentElement.remove()">&times;</span>
-            <h2>Đăng nhập</h2>
-            <form onsubmit="event.preventDefault(); login();">
-                <div class="form-group">
-                    <label for="userType">Loại tài khoản:</label>
-                    <select id="userType">
-                        <option value="customer">Khách hàng</option>
-                        <option value="staff">Nhân viên</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="username">Tài khoản:</label>
-                    <input type="text" id="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Mật khẩu:</label>
-                    <input type="password" id="password" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Đăng nhập</button>
-                </div>
-                <div class="form-group text-center">
-                    <a href="#" onclick="showForgotPassword()">Quên mật khẩu?</a>
-                    <span class="divider">|</span>
-                    <a href="#" onclick="showRegisterForm()">Đăng ký</a>
-                </div>
-            </form>
-        </div>
-    `;
-    document.body.appendChild(loginForm);
-}
-
-// Hiển thị form tài khoản, giá trị truyền vào là true hoặc false
-function showTaiKhoan(show) {
-    var value = (show ? "scale(1)" : "scale(0)");
-    var div = document.getElementsByClassName('containTaikhoan')[0];
-    div.style.transform = value;
-}
-
-// Check xem có ai đăng nhập hay chưa (CurrentUser có hay chưa)
-// Hàm này chạy khi ấn vào nút tài khoản trên header
-function checkTaiKhoan() {
-    if (!getCurrentUser()) {
-        showTaiKhoan(true);
+// Kiểm tra đăng nhập nhân viên
+function checkStaffLogin() {
+    if (!localStorage.getItem('staffLoggedIn')) {
+        window.location.href = 'index.html';
     }
 }
 
@@ -867,19 +847,16 @@ function getThongTinSanPhamFrom_TheGioiDiDong() {
 
 // Hàm đăng nhập cho nhân viên
 function loginAsStaff() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('staffUsername').value;
+    const password = document.getElementById('staffPassword').value;
 
     const staff = staffAccounts.find(account => 
         account.username === username && account.password === password
     );
 
     if (staff) {
-        // Lưu thông tin đăng nhập vào localStorage
         localStorage.setItem('staffLoggedIn', 'true');
         localStorage.setItem('staffName', staff.name);
-        
-        // Chuyển hướng đến trang nhân viên
         window.location.href = 'staff.html';
     } else {
         alert('Tài khoản hoặc mật khẩu không đúng!');

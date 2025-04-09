@@ -116,33 +116,76 @@
 
 	<i class="fa fa-arrow-up" id="goto-top-page" onclick="gotoTop()"></i>
 
-	<div class="login-form">
-		<h2>Đăng nhập</h2>
-		<form id="loginForm">
-			<div class="form-group">
-				<label for="username">Tài khoản:</label>
-				<input type="text" id="username" required>
-			</div>
-			<div class="form-group">
-				<label for="password">Mật khẩu:</label>
-				<input type="password" id="password" required>
-			</div>
-			<div class="form-group">
-				<button type="button" onclick="login()">Đăng nhập</button>
-				<button type="button" onclick="loginAsStaff()">Đăng nhập nhân viên</button>
-			</div>
-		</form>
-	</div>
+	<div class="containTaikhoan">
+		<span class="close" onclick="showTaiKhoan(false);">&times;</span>
+		<div class="taikhoan">
+			<ul class="tab-group">
+				<li class="tab active"><a href="#login">Đăng nhập</a></li>
+				<li class="tab"><a href="#signup">Đăng kí</a></li>
+			</ul>
 
-	<div class="header">
-		<div class="tools-member">
-			<div class="member">
-				<a onclick="showLoginForm()" id="btnDangNhap">
-					<i class="fa fa-user"></i> Đăng nhập
-				</a>
-				<div class="menuMember hide" id="menuMember">
-					<a href="#" onclick="showAccountInfo()"><i class="fa fa-user-circle-o"></i> Tài khoản của tôi</a>
-					<a href="#" onclick="logOut()"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+			<div class="tab-content">
+				<div id="login">
+					<h1>Chào mừng bạn trở lại!</h1>
+
+					<form onsubmit="return login(this);">
+						<div class="field-wrap">
+							<label>Tài khoản<span class="req">*</span></label>
+							<input name='username' type="text" required autocomplete="off" />
+						</div>
+
+						<div class="field-wrap">
+							<label>Mật khẩu<span class="req">*</span></label>
+							<input name="password" type="password" required autocomplete="off" />
+						</div>
+
+						<div class="field-wrap">
+							<label>Loại tài khoản<span class="req">*</span></label>
+							<select name="accountType" required>
+								<option value="customer">Khách hàng</option>
+								<option value="staff">Nhân viên</option>
+							</select>
+						</div>
+
+						<p class="forgot"><a href="#" onclick="showForgotPassword()">Quên mật khẩu?</a></p>
+
+						<button type="submit" class="button button-block">Đăng nhập</button>
+					</form>
+				</div>
+
+				<div id="signup">
+					<h1>Đăng kí tài khoản</h1>
+
+					<form onsubmit="return register(this);">
+						<div class="top-row">
+							<div class="field-wrap">
+								<label>Họ<span class="req">*</span></label>
+								<input name="ho" type="text" required autocomplete="off" />
+							</div>
+
+							<div class="field-wrap">
+								<label>Tên<span class="req">*</span></label>
+								<input name="ten" type="text" required autocomplete="off" />
+							</div>
+						</div>
+
+						<div class="field-wrap">
+							<label>Email<span class="req">*</span></label>
+							<input name="email" type="email" required autocomplete="off" />
+						</div>
+
+						<div class="field-wrap">
+							<label>Tài khoản<span class="req">*</span></label>
+							<input name="newUsername" type="text" required autocomplete="off" />
+						</div>
+
+						<div class="field-wrap">
+							<label>Mật khẩu<span class="req">*</span></label>
+							<input name="newPassword" type="password" required autocomplete="off" />
+						</div>
+
+						<button type="submit" class="button button-block">Tạo tài khoản</button>
+					</form>
 				</div>
 			</div>
 		</div>

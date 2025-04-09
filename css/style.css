@@ -312,3 +312,169 @@ hr {
     margin: 0 10px;
     color: #999;
 }
+
+.top-header {
+    background: #f8f9fa;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.top-header .list-inline ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.top-header .list-inline ul li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.top-header .list-inline ul li:last-child {
+    margin-right: 0;
+}
+
+.top-header .list-inline ul li a {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.top-header .list-inline ul li a:hover {
+    color: #007bff;
+}
+
+.staff-login {
+    float: right;
+}
+
+.staff-login a {
+    color: #28a745 !important;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.modal h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#staff-login-form .form-group button {
+    background: #28a745;
+}
+
+.form-group button:hover {
+    opacity: 0.9;
+}
+
+.form-group.text-center {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-group.text-center a {
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.form-group.text-center a:hover {
+    text-decoration: underline;
+}
+
+.form-group.text-center .divider {
+    margin: 0 10px;
+    color: #999;
+}
+
+.auth-buttons {
+    float: right;
+    margin-top: 15px;
+}
+
+.auth-buttons a {
+    display: inline-block;
+    padding: 8px 20px;
+    margin-left: 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.btn-login {
+    background: #4CAF50;
+    color: white;
+}
+
+.btn-register {
+    background: #2196F3;
+    color: white;
+}
+
+.auth-buttons a:hover {
+    opacity: 0.9;
+}
