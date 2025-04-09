@@ -285,6 +285,29 @@ function capNhatHienThiGioHang() {
     gioHangElement.innerHTML = html;
 }
 
+// Lấy thông tin người dùng hiện tại
+function getCurrentUser() {
+    const username = localStorage.getItem('currentUser');
+    if (!username) return null;
+
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    return users.find(user => user.username === username);
+}
+
+// Cập nhật thông tin người dùng
+function updateCurrentUser(user) {
+    if (!user) return;
+    
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const index = users.findIndex(u => u.username === user.username);
+    
+    if (index !== -1) {
+        users[index] = user;
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+}
+
 // Đặt hàng
 function datHang() {
     const gioHang = getGioHang();
@@ -337,15 +360,6 @@ function formatCurrency(amount) {
         style: 'currency',
         currency: 'VND'
     }).format(amount);
-}
-
-// Lấy thông tin người dùng hiện tại
-function getCurrentUser() {
-    const username = localStorage.getItem('currentUser');
-    if (!username) return null;
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    return users.find(user => user.username === username);
 }
 
 // Khởi tạo khi trang được tải

@@ -153,13 +153,13 @@ function themVaoGioHang(masp, tensp) {
 
 // ============================== TÀI KHOẢN ============================
 
-// Hàm get set cho người dùng hiện tại đã đăng nhập
+// Hàm get set người dùng hiện tại
 function getCurrentUser() {
-    return JSON.parse(window.localStorage.getItem('CurrentUser')); // Lấy dữ liệu từ localstorage
+    return JSON.parse(window.localStorage.getItem('currentUser')); // Thống nhất dùng 'currentUser'
 }
 
 function setCurrentUser(u) {
-    window.localStorage.setItem('CurrentUser', JSON.stringify(u));
+    window.localStorage.setItem('currentUser', JSON.stringify(u));
 }
 
 // Hàm get set cho danh sách người dùng
@@ -331,7 +331,6 @@ function login(form) {
 
 // Đăng xuất
 function logOut() {
-    localStorage.removeItem('userLoggedIn');
     localStorage.removeItem('currentUser');
     location.reload();
 }
@@ -350,18 +349,22 @@ function checkStaffLogin() {
     }
 }
 
-// Cập nhật số lượng hàng trong giỏ hàng + Tên current user
+// Cập nhật thông tin người dùng
 function capNhat_ThongTin_CurrentUser() {
     var u = getCurrentUser();
     if (u) {
-        // Cập nhật số lượng hàng vào header
+        // Cập nhật số lượng hàng trong giỏ
         document.getElementsByClassName('cart-number')[0].innerHTML = getTongSoLuongSanPhamTrongGioHang(u);
         // Cập nhật tên người dùng
-        document.getElementsByClassName('member')[0]
-            .getElementsByTagName('a')[0].childNodes[2].nodeValue = ' ' + u.username;
-        // bỏ class hide của menu người dùng
-        document.getElementsByClassName('menuMember')[0]
-            .classList.remove('hide');
+        document.getElementsByClassName('member')[0].innerHTML = `
+            <a class="member-link">
+                <i class="fa fa-user"></i> ${u.username}
+            </a>
+            <div class="menuMember">
+                <a href="nguoidung.html">Trang người dùng</a>
+                <a onclick="logOut()">Đăng xuất</a>
+            </div>
+        `;
     }
 }
 
